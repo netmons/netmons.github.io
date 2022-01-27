@@ -42,7 +42,10 @@ Stats:
 
 const DEBUG = false;
 
+
 const BASE_SIZE = 240;
+const SPRITE_SIZE = 32;
+const HALF_SPRITE_SIZE = 32 / 2;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
 const ZOOM = getScale();
@@ -105,6 +108,12 @@ function newMon(scene, type) {
     }
 
     function moveTo(x, y) {
+        // HACK: hardcoded game area, consider onclick on sprites/game area later
+        if (x < HALF_SPRITE_SIZE) x = HALF_SPRITE_SIZE;
+        if (x >= BASE_SIZE - HALF_SPRITE_SIZE) x = BASE_SIZE - HALF_SPRITE_SIZE;
+        if (y < 60) y = 60;
+        if (y >= 180 - HALF_SPRITE_SIZE) y = 180 - HALF_SPRITE_SIZE; // don't clip over button row
+
         let pos = this.getPos();
         let path = new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y);
         if (this.sprite != null) {
@@ -113,10 +122,11 @@ function newMon(scene, type) {
         }
         this.sprite = scene.add.follower(path, pos.x, pos.y, type);
         if (x > pos.x) this.sprite.setFlipX(true);
+        this.isMoving = true;
         this.sprite.startFollow(
         {
             positionOnPath: true,
-            duration: 3000,
+            duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
             repeat: 0,
             rotateToPath: false,
         }
@@ -127,10 +137,12 @@ function newMon(scene, type) {
         type: type,
         sprite: sprite,
         scene: scene,
+        isMoving: false,
         getPos: getPos,
         moveTo: moveTo
     }
 }
+
 function create() {
 
     // Background
@@ -159,11 +171,8 @@ function create() {
     this.input.on('pointerdown', function (pointer) {
         let x = Math.floor(pointer.x);
         let y = Math.floor(pointer.y);
-
-        if (y >= 60 && y < 180) { // HACK: hardcoded game area, consider onclick on sprites/game area later
-            if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
-            taps.push({x, y});
-        }
+        if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
+        taps.push({x, y});
     }, this);
 
     //game.scale.scaleMode = Phaser.Scale.NONE;
@@ -187,6 +196,16 @@ function update() {
     taps = [];
 }
 
+// Library
+function distance(x1, y1, x2, y2) {
+    return Phaser.Math.Distance.Between(x1, y1, x2, y2);
+}
+const MON_SPEED_IN_PIXEL_PER_S = 90; // TODO: make dependent on mon, 100 fastest? 80 slowest?
+function monRunTimeForDistance(distance) {
+    return Math.floor((distance / MON_SPEED_IN_PIXEL_PER_S) * 1000);
+}
+
+// Fullscreen
 game.scale.on(Phaser.Scale.Events.LEAVE_FULLSCREEN, () => {
     game.scale.scaleMode = Phaser.Scale.NONE;
     game.scale.resize(WIDTH, HEIGHT);
