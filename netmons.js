@@ -56,8 +56,6 @@ function getScale() {
 let config = {
     parent: "game",
     type: Phaser.AUTO,
-    width: WIDTH,
-    height: HEIGHT,
     scale: {
         width: WIDTH,
         height: HEIGHT,
