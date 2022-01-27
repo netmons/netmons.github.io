@@ -98,8 +98,9 @@ function preload() {
 let taps = []
 let GRAPHICS;
 let mon;
-function newMon(scene, type) {
-    let sprite = scene.add.image(170, HEIGHT / 2, type);
+let rival;
+function newMon(scene, x, y, type) {
+    let sprite = scene.add.image(x, y, type);
 
     function getPos() {
         if (this.sprite != null) {
@@ -153,7 +154,8 @@ function create() {
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
 
-    mon = newMon(this, "drakano");
+    mon = newMon(this, 170, HEIGHT / 2, "drakano");
+    rival = newMon(this, 80, HEIGHT / 2, "drakano");
 
     // UI
     this.add.image(225, 15, 'btn_back');
