@@ -45,6 +45,7 @@ const BASE_SIZE = 240;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
 function getScale() {
+    console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`)
     if (window.innerWidth >= 500 && window.innerHeight >= 500) {
         return 2;
     }
