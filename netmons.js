@@ -48,10 +48,8 @@ const ZOOM = getScale();
 function getScale() {
     console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`);
     if (window.innerWidth >= 500 && window.innerHeight >= 500) {
-        console.log("double zoom");
         return 2;
     }
-    console.log("normal zoom");
     return 1;
 }
 
