@@ -42,6 +42,8 @@ Stats:
 */
 
 const BASE_SIZE = 240;
+const WIDTH = BASE_SIZE;
+const HEIGHT = BASE_SIZE;
 function getScale() {
     if (window.innerWidth >= 500 && window.innerHeight >= 500) {
         return 2;
