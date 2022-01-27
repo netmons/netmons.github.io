@@ -44,11 +44,14 @@ Stats:
 const BASE_SIZE = 240;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
+const ZOOM = getScale();
 function getScale() {
-    console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`)
+    console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`);
     if (window.innerWidth >= 500 && window.innerHeight >= 500) {
+        console.log("double zoom");
         return 2;
     }
+    console.log("normal zoom");
     return 1;
 }
 
@@ -57,7 +60,7 @@ let config = {
     type: Phaser.AUTO,
     width: BASE_SIZE,
     height: BASE_SIZE,
-    zoom: getScale(),
+    zoom: ZOOM,
     scene: {
         preload: preload,
         create: create
