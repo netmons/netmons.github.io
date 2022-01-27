@@ -41,14 +41,20 @@ Stats:
     )
 */
 
-const WIDTH = 240;
-const HEIGHT = 240;
+const BASE_SIZE = 240;
+function getScale() {
+    if (window.innerWidth >= 500 && window.innerHeight >= 500) {
+        return 2;
+    }
+    return 1;
+}
 
 let config = {
     parent: "game",
     type: Phaser.AUTO,
-    width: WIDTH,
-    height: HEIGHT,
+    width: BASE_SIZE,
+    height: BASE_SIZE,
+    zoom: getScale(),
     scene: {
         preload: preload,
         create: create
