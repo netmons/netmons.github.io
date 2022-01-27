@@ -58,9 +58,13 @@ function getScale() {
 let config = {
     parent: "game",
     type: Phaser.AUTO,
-    width: BASE_SIZE,
-    height: BASE_SIZE,
-    zoom: ZOOM,
+    width: WIDTH,
+    height: HEIGHT,
+    scale: {
+        width: WIDTH,
+        height: HEIGHT,
+        zoom: ZOOM
+    },
     scene: {
         preload: preload,
         create: create
