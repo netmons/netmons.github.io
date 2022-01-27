@@ -120,17 +120,20 @@ function newMon(scene, type) {
             this.sprite.destroy();
             this.sprite = null;
         }
-        this.sprite = scene.add.follower(path, pos.x, pos.y, type);
+        this.sprite = this.scene.add.follower(path, pos.x, pos.y, type);
         if (x > pos.x) this.sprite.setFlipX(true);
         this.isMoving = true;
-        this.sprite.startFollow(
-        {
+        let self = this;
+        function moveToComplete() {
+            self.isMoving = false;
+        }
+        this.sprite.startFollow({
             positionOnPath: true,
             duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
             repeat: 0,
             rotateToPath: false,
-        }
-        );
+            onComplete: moveToComplete
+        });
     }
 
     return {
@@ -138,6 +141,7 @@ function newMon(scene, type) {
         sprite: sprite,
         scene: scene,
         isMoving: false,
+        isIdling: false,
         getPos: getPos,
         moveTo: moveTo
     }
@@ -183,7 +187,7 @@ function create() {
     GRAPHICS.fillStyle(0xffff00, 1.0); // yellow, full alpha
 }
 
-function update() {
+function update(t, dt) {
     for (let tap of taps) {
         if (DEBUG) GRAPHICS.fillRect(tap.x, tap.y, 1, 1);
         if (DEBUG) console.log(`${mon.getPos().x} ${mon.getPos().y}`);
