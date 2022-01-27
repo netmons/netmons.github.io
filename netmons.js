@@ -196,7 +196,6 @@ function update(t, dt) {
             mon.moveTo(tap.x, tap.y);
         }
     }
-
     taps = [];
 }
 
