@@ -69,8 +69,7 @@ let game = new Phaser.Game(config);
 // Pyxel color palette
 // https://github.com/kitao/pyxel#color-palette
 
-function preload ()
-{
+function preload() {
     this.load.image('btn_back', 'a/back.png');
     this.load.image('btn1', 'a/su1.png');
     this.load.image('btn2', 'a/su2.png');
@@ -84,8 +83,7 @@ function preload ()
     this.load.image('drakano', 'a/sudrakano.png');
 }
 
-function create ()
-{
+function create() {
     // Background
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
