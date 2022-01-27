@@ -47,23 +47,28 @@ const HEIGHT = BASE_SIZE;
 const ZOOM = getScale();
 function getScale() {
     console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`);
-    if (window.innerWidth >= 500 && window.innerHeight >= 500) {
+    if (window.innerWidth >= 500 && window.innerHeight >= 530) {
         return 2;
     }
     return 1;
 }
 
 let config = {
-    parent: "game",
     type: Phaser.AUTO,
     scale: {
+        parent: "game",
+        fullscreenTarget: "game",
+        mode: Phaser.Scale.FIT,
         width: WIDTH,
-        height: HEIGHT,
-        zoom: ZOOM
+        height: HEIGHT
+    },
+    render: {
+        pixelArt: true
     },
     scene: {
         preload: preload,
-        create: create
+        create: create,
+        update: update
     }
 };
 
@@ -91,7 +96,7 @@ function create() {
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
 
-    this.add.image(170, HEIGHT / 2, 'drakano');
+    let mon = this.add.image(170, HEIGHT / 2, 'drakano');
 
     // UI
     this.add.image(225, 15, 'btn_back');
@@ -109,4 +114,39 @@ function create() {
         blendMode: 'ADD'
     });
     */
+
+    this.input.on('pointerdown', function (pointer) {
+        console.log(`down: ${pointer.x}, ${pointer.y}, frame: ${this.game.loop.frame}`);
+    }, this);
+
+    /*
+    game.scale.scaleMode = Phaser.Scale.NONE;
+    game.scale.resize(WIDTH, HEIGHT);
+    game.scale.setZoom(ZOOM); */
+
+    game.scale.scaleMode = Phaser.Scale.NONE;
+    game.scale.resize(WIDTH, HEIGHT);
+    //game.scale.setZoom(ZOOM);
 }
+
+function update() {
+
+}
+
+game.scale.on(Phaser.Scale.Events.LEAVE_FULLSCREEN, () => {
+    game.scale.scaleMode = Phaser.Scale.NONE;
+    game.scale.resize(WIDTH, HEIGHT);
+    game.scale.setZoom(1);
+});
+
+game.scale.on(Phaser.Scale.Events.ENTER_FULLSCREEN, () => {
+    game.scale.scaleMode = Phaser.Scale.FIT;
+    game.scale.setGameSize(WIDTH, HEIGHT);
+});
+
+function goFullscreen() {
+    if (!game.scale.isFullscreen) {
+        game.scale.startFullscreen();
+    }
+}
+window.netmonsFullscreen = goFullscreen;
