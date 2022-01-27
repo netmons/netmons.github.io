@@ -6,28 +6,27 @@
 * Utility abilities?
 
 Types:
-Neutral
-Light > Void > ???
-Fire > Gaia > Water
+Gaia > Water > Fire > Gaia
+Neutral > Void > Light > Neutral
 
 ## Mons
 
-Gooh
+Gooh (Neutral)
     Hit (neutral, melee)
 
-Trolmon
+Trolmon (Gaia)
     Axe throw (neutral, range)
     Rootgrip (gaia, melee)
 
-Drakano
+Drakano (Fire)
     Fireball (fire, range)
     Slash (neutral, melee)
 
-Nessya
+Nessya (Water)
     Tide (water, range)
     Choke? (neutral, melee)
 
-Glitchee
+Glitchee (Neutral)
     Cheat (neutral, does nothing)
 
 Stats:
@@ -40,6 +39,8 @@ Stats:
     * Resist
     )
 */
+
+const DEBUG = false;
 
 const BASE_SIZE = 240;
 const WIDTH = BASE_SIZE;
@@ -91,12 +92,52 @@ function preload() {
     this.load.image('drakano', 'a/sudrakano.png');
 }
 
+let taps = []
+let GRAPHICS;
+let mon;
+function newMon(scene, type) {
+    let sprite = scene.add.image(170, HEIGHT / 2, type);
+
+    function getPos() {
+        if (this.sprite != null) {
+            return {x: this.sprite.x, y: this.sprite.y};
+        }
+    }
+
+    function moveTo(x, y) {
+        let pos = this.getPos();
+        let path = new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y);
+        if (this.sprite != null) {
+            this.sprite.destroy();
+            this.sprite = null;
+        }
+        this.sprite = scene.add.follower(path, pos.x, pos.y, type);
+        if (x > pos.x) this.sprite.setFlipX(true);
+        this.sprite.startFollow(
+        {
+            positionOnPath: true,
+            duration: 3000,
+            repeat: 0,
+            rotateToPath: false,
+        }
+        );
+    }
+
+    return {
+        type: type,
+        sprite: sprite,
+        scene: scene,
+        getPos: getPos,
+        moveTo: moveTo
+    }
+}
 function create() {
+
     // Background
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
 
-    let mon = this.add.image(170, HEIGHT / 2, 'drakano');
+    mon = newMon(this, "drakano");
 
     // UI
     this.add.image(225, 15, 'btn_back');
@@ -116,21 +157,34 @@ function create() {
     */
 
     this.input.on('pointerdown', function (pointer) {
-        console.log(`down: ${pointer.x}, ${pointer.y}, frame: ${this.game.loop.frame}`);
+        let x = Math.floor(pointer.x);
+        let y = Math.floor(pointer.y);
+
+        if (y >= 60 && y < 180) { // HACK: hardcoded game area, consider onclick on sprites/game area later
+            if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
+            taps.push({x, y});
+        }
     }, this);
 
-    /*
-    game.scale.scaleMode = Phaser.Scale.NONE;
-    game.scale.resize(WIDTH, HEIGHT);
-    game.scale.setZoom(ZOOM); */
-
-    game.scale.scaleMode = Phaser.Scale.NONE;
-    game.scale.resize(WIDTH, HEIGHT);
+    //game.scale.scaleMode = Phaser.Scale.NONE;
+    //game.scale.resize(WIDTH, HEIGHT);
     //game.scale.setZoom(ZOOM);
+
+    GRAPHICS = this.add.graphics();
+    GRAPHICS.fillStyle(0xffff00, 1.0); // yellow, full alpha
 }
 
 function update() {
+    for (let tap of taps) {
+        if (DEBUG) GRAPHICS.fillRect(tap.x, tap.y, 1, 1);
+        if (DEBUG) console.log(`${mon.getPos().x} ${mon.getPos().y}`);
 
+        if (mon != null) {
+            mon.moveTo(tap.x, tap.y);
+        }
+    }
+
+    taps = [];
 }
 
 game.scale.on(Phaser.Scale.Events.LEAVE_FULLSCREEN, () => {
