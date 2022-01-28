@@ -4,7 +4,6 @@
 
 ## Backlog
 
-* Z-Index
 * Event system
 * Refactor movement to events
 * Idle event

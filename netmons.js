@@ -182,8 +182,21 @@ let taps = []
 let GRAPHICS;
 let mon;
 let rival;
+/*
+function newEntityManager(scene) {
+    function add() {
+
+    }
+    return {
+        _scene: scene,
+        _entities: [],
+        add: add
+    }
+}
+*/
 function newMon(scene, x, y, type) {
     let sprite = scene.add.follower(null, x, y, type);
+    sprite.setDepth(y);
 
     function getPos() {
         return {x: this.sprite.x, y: this.sprite.y};
@@ -210,7 +223,8 @@ function newMon(scene, x, y, type) {
             duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
             repeat: 0,
             rotateToPath: false,
-            onComplete: () => { self.isMoving = false; }
+            onComplete: () => { self.isMoving = false; },
+            onUpdate: () => { self.sprite.setDepth(self.getPos().y); }
         });
     }
 
