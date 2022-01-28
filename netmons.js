@@ -1,3 +1,5 @@
+"use strict";
+
 /*
 * Each Mon has a (typed) Special Attack
 * Each Mon has a (untyped) Neutral Attack
@@ -33,7 +35,7 @@ const DB = { // Stats: HP, Atk, Def, Spd
         [TN, TB, TN, TM],
         [TN, TM, TB, TN],
     ],
-    food: [
+    items: [
         {
             name: "Candy"
         },
@@ -41,7 +43,7 @@ const DB = { // Stats: HP, Atk, Def, Spd
             name: "Salad"
         },
         {
-            name: "Meat"
+            name: "Steak"
         },
         {
             name: "Water"
@@ -158,6 +160,9 @@ let config = {
 
 let game = new Phaser.Game(config);
 
+function loadAsset(scene, name) {
+    scene.load.image(name.toLowerCase(), `a/su${name.toLowerCase()}.png`);
+}
 function preload() {
     this.load.image('btn_back', 'a/back.png');
     this.load.image('btn1', 'a/su1.png');
@@ -168,11 +173,13 @@ function preload() {
     this.load.image('sky', 'a/susky.png');
     this.load.image('ground', 'a/sugrass.png');
 
-    // Mons
-    this.load.image('gooh', 'a/sugooh.png');
-    this.load.image('trolmon', 'a/sutrolmon.png');
-    this.load.image('drakano', 'a/sudrakano.png');
-    this.load.image('nessya', 'a/sunessya.png');
+    for (let item of DB.items) {
+        loadAsset(this, item.name);
+    }
+
+    for (let mon of DB.mons) {
+        loadAsset(this, mon.name);
+    }
 }
 
 let GRAPHICS;
@@ -228,6 +235,13 @@ class EventIdle extends EventTap {
 
 // Mon
 function newMon(scene, x, y, kind) {
+    function _checkKind(kind) {
+        if (DB.mons.map(m => m.name.toLowerCase()).some(n => n === kind)) {
+            return kind;
+        }
+        return 'glitchee';
+    }
+    kind = _checkKind(kind);
     let sprite = scene.add.follower(null, x, y, kind);
     sprite.setDepth(y);
 
@@ -311,6 +325,7 @@ function create() {
     events.push(new EventMonSpawn(this, 20, HEIGHT / 2, "trolmon"));
     events.push(new EventMonSpawn(this, 60, HEIGHT / 2, "drakano"));
     events.push(new EventMonSpawn(this, 100, HEIGHT / 2, "nessya"));
+    events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
     events.push(new EventPlayerSpawn(this, 160, HEIGHT / 2, "gooh"));
 
     if (DEBUG) {
