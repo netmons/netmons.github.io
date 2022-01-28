@@ -5,3 +5,7 @@
 ## GGJ2022
 
 Theme: **Duality**
+
+## Credits
+
+* Oliver "oz" Z.
