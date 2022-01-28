@@ -4,44 +4,9 @@
 * Range and melee attacks
 * Range can be avoided, melee attacks only work in melee range
 * Utility abilities?
-
-Types:
-Gaia > Water > Fire > Gaia
-Neutral > Void > Light > Neutral
-
-## Mons
-
-Gooh (Neutral)
-    Hit (neutral, melee)
-
-Trolmon (Gaia)
-    Axe throw (neutral, range)
-    Rootgrip (gaia, melee)
-
-Drakano (Fire)
-    Fireball (fire, range)
-    Slash (neutral, melee)
-
-Nessya (Water)
-    Tide (water, range)
-    Choke? (neutral, melee)
-
-Glitchee (Neutral)
-    Cheat (neutral, does nothing)
-
-Stats:
-    * HP
-    * Attack
-    * Def
-    * Speed
-    (exp:
-    * Special
-    * Resist
-    )
 */
 
 const DEBUG = false;
-
 
 const BASE_SIZE = 240;
 const SPRITE_SIZE = 32;
@@ -56,6 +21,122 @@ function getScale() {
     }
     return 1;
 }
+
+const TB = 1.5; // Bonus
+const TN = 1.0; // Neutral
+const TM = 0.5; // Malus
+const DB = { // Stats: HP, Atk, Def, Spd
+    types: ["Neutral", "Gaia", "Fire", "Water"],
+    typeMatrix: [ // BASE: Gaia > Water > Fire > Gaia | EXP: Neutral > Void > Light > Neutral
+        [TN, TN, TN, TN],
+        [TN, TN, TM, TB],
+        [TN, TB, TN, TM],
+        [TN, TM, TB, TN],
+    ],
+    food: [
+        {
+            name: "Candy"
+        },
+        {
+            name: "Salad"
+        },
+        {
+            name: "Meat"
+        },
+        {
+            name: "Water"
+        },
+    ],
+    attacks: [
+        {
+            name: "Nope",
+            type: 0,
+            dmg: 3
+        },
+        {
+            name: "Hit",
+            type: 0,
+            dmg: 5
+        },
+        {
+            name: "Axe Throw",
+            type: 0,
+            dmg: 5
+        },
+        {
+            name: "Rootgrip",
+            type: 1,
+            dmg: 5
+        },
+        {
+            name: "Fireball",
+            type: 2,
+            dmg: 5
+        },
+        {
+            name: "Slash",
+            type: 0,
+            dmg: 5
+        },
+        {
+            name: "Tide",
+            type: 3,
+            dmg: 5
+        },
+        {
+            name: "Choke",
+            type: 0,
+            dmg: 5
+        },
+    ],
+    mons: [
+        {
+            name: "Glitchee",
+            type: 0,
+            stats: [10, 3, 3, 3],
+            melee: 0,
+            range: null,
+            evo: {}
+        },
+        {
+            name: "Gooh",
+            type: 0,
+            stats: [15, 5, 5, 5],
+            melee: 1,
+            range: null,
+            evo: {
+                "1113": 2,
+                "1222": 3,
+                "2333": 4,
+            }
+        },
+        {
+            name: "Trolmon",
+            type: 1,
+            stats: [30, 10, 10, 10],
+            melee: 3,
+            range: 2,
+            evo: {}
+        },
+        {
+            name: "Drakano",
+            type: 2,
+            stats: [30, 10, 10, 10],
+            melee: 5,
+            range: 4,
+            evo: {}
+        },
+        {
+            name: "Nessya",
+            type: 3,
+            stats: [30, 10, 10, 10],
+            melee: 7,
+            range: 6,
+            evo: {}
+        },
+    ]
+}
+
 
 let config = {
     type: Phaser.AUTO,
