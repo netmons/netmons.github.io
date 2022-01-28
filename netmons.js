@@ -100,40 +100,34 @@ let GRAPHICS;
 let mon;
 let rival;
 function newMon(scene, x, y, type) {
-    let sprite = scene.add.image(x, y, type);
+    let sprite = scene.add.follower(null, x, y, type);
 
     function getPos() {
-        if (this.sprite != null) {
-            return {x: this.sprite.x, y: this.sprite.y};
-        }
+        return {x: this.sprite.x, y: this.sprite.y};
     }
 
     function moveTo(x, y) {
+        let pos = this.getPos();
+        if (x > pos.x)
+            this.sprite.setFlipX(true);
+        else
+            this.sprite.setFlipX(false);
+
         // HACK: hardcoded game area, consider onclick on sprites/game area later
         if (x < HALF_SPRITE_SIZE) x = HALF_SPRITE_SIZE;
         if (x >= BASE_SIZE - HALF_SPRITE_SIZE) x = BASE_SIZE - HALF_SPRITE_SIZE;
         if (y < 60) y = 60;
         if (y >= 180 - HALF_SPRITE_SIZE) y = 180 - HALF_SPRITE_SIZE; // don't clip over button row
 
-        let pos = this.getPos();
-        let path = new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y);
-        if (this.sprite != null) {
-            this.sprite.destroy();
-            this.sprite = null;
-        }
-        this.sprite = this.scene.add.follower(path, pos.x, pos.y, type);
-        if (x > pos.x) this.sprite.setFlipX(true);
+        this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
         this.isMoving = true;
         let self = this;
-        function moveToComplete() {
-            self.isMoving = false;
-        }
         this.sprite.startFollow({
             positionOnPath: true,
             duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
             repeat: 0,
             rotateToPath: false,
-            onComplete: moveToComplete
+            onComplete: () => { self.isMoving = false; }
         });
     }
 
@@ -154,8 +148,8 @@ function create() {
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
 
-    mon = newMon(this, 170, HEIGHT / 2, "drakano");
     rival = newMon(this, 80, HEIGHT / 2, "drakano");
+    mon = newMon(this, 170, HEIGHT / 2, "drakano");
 
     // UI
     this.add.image(225, 15, 'btn_back');
