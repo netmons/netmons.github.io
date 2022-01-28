@@ -283,6 +283,7 @@ class EventItemConsume extends NMEvent {
             if (DEBUG) console.log("Stomach:", _gameState.stomach);
             if (_gameState.stomach.length === 4) {
                 let stomachString = _gameState.stomach.sort().reduce((a, b) => String(a) + String(b));
+                if (DEBUG) console.log("StomachStr:", stomachString);
                 let monKind = _gameState.mon.kind;
                 let maybeEvolution = DB.mons.filter(mon => mon.name === monKind).map(mon => mon.evo[stomachString]).shift();
                 if (maybeEvolution !== undefined) events.push(new EventEvolution(maybeEvolution));
@@ -329,10 +330,7 @@ function newMon(scene, x, y, kind) {
     }
     function moveTo(x, y, onUpdate=onMoveUpdate(this)) {
         let pos = this.getPos();
-        if (x > pos.x)
-            this.sprite.setFlipX(true);
-        else
-            this.sprite.setFlipX(false);
+        this.sprite.setFlipX(x > pos.x);
 
         // HACK: hardcoded game area, consider onclick on sprites/game area later
         if (x < HALF_SPRITE_SIZE) x = HALF_SPRITE_SIZE;
@@ -341,7 +339,6 @@ function newMon(scene, x, y, kind) {
         if (y >= BASE_SIZE - HALF_SPRITE_SIZE) y = BASE_SIZE - HALF_SPRITE_SIZE;
 
         this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
-        let self = this;
         this.sprite.startFollow({
             positionOnPath: true,
             duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
