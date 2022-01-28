@@ -4,7 +4,6 @@
 
 ## Backlog
 
-* Idle event
 * Food art
 * Food spawn events
 

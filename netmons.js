@@ -178,10 +178,13 @@ function preload() {
     this.load.image('nessya', 'a/sunessya.png');
 }
 
-let events = [];
 let GRAPHICS;
+let events = [];
+let _gameState = {
+    idleTime: 0,
+    idleThreshold: 5000
+};
 let mon;
-let rival;
 
 // Events
 class NMEvent {
@@ -193,6 +196,7 @@ class EventTap extends NMEvent {
         super();
         this.x = x;
         this.y = y;
+        _gameState.idleTime = 0;
     }
     update(t, dt) {
         if (mon != null) {
@@ -214,6 +218,14 @@ class EventPlayerSpawn extends EventMonSpawn {
     constructor(scene, x, y, kind) {
         super(scene, x, y, kind);
         mon = this.mon;
+    }
+}
+const IDLE_RANGE = 32;
+class EventIdle extends EventTap {
+    constructor() {
+        let monPos = mon.getPos();
+        super(monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
+        _gameState.idleThreshold = random(3500, 7000);
     }
 }
 
@@ -311,6 +323,8 @@ function create() {
 }
 
 function update(t, dt) {
+    gameMaster(t, dt, events)
+
     let event = undefined;
     let newEvent = null;
     let leftovers = [];
@@ -321,6 +335,16 @@ function update(t, dt) {
     Array.prototype.push.apply(events, leftovers);
 }
 
+// Game Master populates the event queue based on game state
+function gameMaster(t, dt, events) {
+    // Idling
+    if (_gameState.idleTime > _gameState.idleThreshold) {
+        if (mon !== null) events.push(new EventIdle());
+    } else {
+        _gameState.idleTime += dt;
+    }
+}
+
 // Library
 function distance(x1, y1, x2, y2) {
     return Phaser.Math.Distance.Between(x1, y1, x2, y2);
@@ -328,6 +352,9 @@ function distance(x1, y1, x2, y2) {
 const MON_SPEED_IN_PIXEL_PER_S = 90; // TODO: make dependent on mon, 100 fastest? 80 slowest?
 function monRunTimeForDistance(distance) {
     return Math.floor((distance / MON_SPEED_IN_PIXEL_PER_S) * 1000);
+}
+function random(min, max) {
+    return Phaser.Math.RND.between(min, max);
 }
 
 // Fullscreen
