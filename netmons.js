@@ -214,17 +214,16 @@ class NMEvent {
     update(t, dt) { return null; }
 }
 class EventTap extends NMEvent {
-    constructor(x, y) {
+    constructor(x, y, item=null) {
         super();
-        this.x = x;
-        this.y = y;
         _gameState.idleTime = 0;
-    }
-    update(t, dt) {
         if (mon != null) {
-            mon.moveTo(this.x, this.y);
+            if (item !== null) {
+                mon.moveToItem(item)
+            } else {
+                mon.moveTo(x, y);
+            }
         }
-        return null;
     }
 }
 class EventMonSpawn extends NMEvent {
@@ -259,6 +258,20 @@ class EventItemSpawn extends NMEvent {
         }
         _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName).setInteractive();
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
+        _gameState.items[locationIdx].on('pointerdown', (pointer) => {
+            let x = Math.floor(pointer.x);
+            let y = Math.floor(pointer.y);
+            events.push(new EventTap(x, y, locationIdx));
+        });
+    }
+}
+class EventItemConsume extends NMEvent {
+    constructor(mon, itemIdx) {
+        super();
+        if (_gameState.items[itemIdx] !== null) {
+            _gameState.items[itemIdx].destroy();
+            _gameState.items[itemIdx] = null;
+        }
     }
 }
 
@@ -277,8 +290,20 @@ function newMon(scene, x, y, kind) {
     function getPos() {
         return {x: this.sprite.x, y: this.sprite.y};
     }
-
-    function moveTo(x, y) {
+    function onMoveUpdate(self) {
+        return () => self.sprite.setDepth(self.getPos().y);
+    }
+    function onMoveToItemUpdate(self, item, itemIdx) {
+        return () => {
+            onMoveUpdate.apply(self);
+            let pos = self.getPos();
+            let distanceToItem = distance(pos.x, pos.y, item.x, item.y);
+            if (distanceToItem <= 12) {
+                events.push(new EventItemConsume(mon, itemIdx));
+            }
+        }
+    }
+    function moveTo(x, y, onUpdate=onMoveUpdate(this)) {
         let pos = this.getPos();
         if (x > pos.x)
             this.sprite.setFlipX(true);
@@ -299,8 +324,14 @@ function newMon(scene, x, y, kind) {
             repeat: 0,
             rotateToPath: false,
             onComplete: () => { },
-            onUpdate: () => { self.sprite.setDepth(self.getPos().y); }
+            onUpdate: onUpdate
         });
+    }
+    function moveToItem(positionIdx) {
+        let item = _gameState.items[positionIdx];
+        if (item !== null) {
+            this.moveTo(item.x, item.y, onMoveToItemUpdate(this, item, positionIdx));
+        }
     }
 
     return {
@@ -308,7 +339,8 @@ function newMon(scene, x, y, kind) {
         sprite: sprite,
         scene: scene,
         getPos: getPos,
-        moveTo: moveTo
+        moveTo: moveTo,
+        moveToItem: moveToItem
     }
 }
 
