@@ -175,6 +175,7 @@ function preload() {
     this.load.image('gooh', 'a/sugooh.png');
     this.load.image('trolmon', 'a/sutrolmon.png');
     this.load.image('drakano', 'a/sudrakano.png');
+    this.load.image('nessya', 'a/sunessya.png');
 }
 
 let taps = []
@@ -198,7 +199,7 @@ function newMon(scene, x, y, type) {
         // HACK: hardcoded game area, consider onclick on sprites/game area later
         if (x < HALF_SPRITE_SIZE) x = HALF_SPRITE_SIZE;
         if (x >= BASE_SIZE - HALF_SPRITE_SIZE) x = BASE_SIZE - HALF_SPRITE_SIZE;
-        if (y < 60) y = 60;
+        if (y < 56) y = 56;
         if (y >= 180 - HALF_SPRITE_SIZE) y = 180 - HALF_SPRITE_SIZE; // don't clip over button row
 
         this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
@@ -232,6 +233,7 @@ function create() {
 
     rival = newMon(this, 80, HEIGHT / 2, "gooh");
     newMon(this, 50, HEIGHT / 2, "trolmon");
+    newMon(this, 110, HEIGHT / 2, "nessya");
     mon = newMon(this, 170, HEIGHT / 2, "drakano");
 
     // UI
