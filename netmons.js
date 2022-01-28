@@ -189,6 +189,8 @@ let GRAPHICS;
 let events = [];
 let _gameState = {
     scene: null,
+    mon: null,
+    stomach: null,
     idleTime: 0,
     idleThreshold: 5000,
     itemWaitTime: 0,
@@ -206,7 +208,6 @@ let _gameState = {
         null
     ]
 };
-let mon;
 
 // Events
 class NMEvent {
@@ -217,11 +218,11 @@ class EventTap extends NMEvent {
     constructor(x, y, item=null) {
         super();
         _gameState.idleTime = 0;
-        if (mon != null) {
+        if (_gameState.mon != null) {
             if (item !== null) {
-                mon.moveToItem(item)
+                _gameState.mon.moveToItem(item)
             } else {
-                mon.moveTo(x, y);
+                _gameState.mon.moveTo(x, y);
             }
         }
     }
@@ -235,13 +236,13 @@ class EventMonSpawn extends NMEvent {
 class EventPlayerSpawn extends EventMonSpawn {
     constructor(scene, x, y, kind) {
         super(scene, x, y, kind);
-        mon = this.mon;
+        _gameState.mon = this.mon;
     }
 }
 const IDLE_RANGE = 32;
 class EventIdle extends EventTap {
     constructor() {
-        let monPos = mon.getPos();
+        let monPos = _gameState.mon.getPos();
         super(monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
         _gameState.idleThreshold = random(3500, 7000);
     }
@@ -299,7 +300,7 @@ function newMon(scene, x, y, kind) {
             let pos = self.getPos();
             let distanceToItem = distance(pos.x, pos.y, item.x, item.y);
             if (distanceToItem <= 12) {
-                events.push(new EventItemConsume(mon, itemIdx));
+                events.push(new EventItemConsume(_gameState.mon, itemIdx));
             }
         }
     }
@@ -419,7 +420,7 @@ function update(t, dt) {
 function gameMaster(t, dt, events) {
     // Idling
     if (_gameState.idleTime > _gameState.idleThreshold) {
-        if (mon !== null) events.push(new EventIdle());
+        if (_gameState.mon !== null) events.push(new EventIdle());
     } else {
         _gameState.idleTime += dt;
     }
