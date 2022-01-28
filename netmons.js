@@ -137,7 +137,6 @@ const DB = { // Stats: HP, Atk, Def, Spd
     ]
 }
 
-
 let config = {
     type: Phaser.AUTO,
     scale: {
