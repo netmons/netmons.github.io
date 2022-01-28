@@ -11,8 +11,11 @@
 const DEBUG = false;
 
 const BASE_SIZE = 240;
+const GRID_SIZE = BASE_SIZE / 8;
+const HALF_GRID_SIZE = GRID_SIZE / 2;
 const SPRITE_SIZE = 32;
 const HALF_SPRITE_SIZE = 32 / 2;
+const ITEM_SIZE = HALF_SPRITE_SIZE;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
 const ZOOM = getScale();
@@ -185,8 +188,23 @@ function preload() {
 let GRAPHICS;
 let events = [];
 let _gameState = {
+    scene: null,
     idleTime: 0,
-    idleThreshold: 5000
+    idleThreshold: 5000,
+    itemWaitTime: 0,
+    itemWaitThreshold: 10000,
+    itemSpawnLocations: [ // 0 top left, 1 top right, 2 bottom left, 3 bottom right
+        [HALF_GRID_SIZE, GRID_SIZE * 2 + HALF_GRID_SIZE],
+        [GRID_SIZE * 7 + HALF_GRID_SIZE, GRID_SIZE * 2 + HALF_GRID_SIZE],
+        [HALF_GRID_SIZE, GRID_SIZE * 7 + HALF_GRID_SIZE],
+        [GRID_SIZE * 7 + HALF_GRID_SIZE, GRID_SIZE * 7 + HALF_GRID_SIZE],
+    ],
+    items: [
+        null,
+        null,
+        null,
+        null
+    ]
 };
 let mon;
 
@@ -214,9 +232,6 @@ class EventMonSpawn extends NMEvent {
         super();
         this.mon = newMon(scene, x, y, kind);
     }
-    update(t, dt) {
-        return null;
-    }
 }
 class EventPlayerSpawn extends EventMonSpawn {
     constructor(scene, x, y, kind) {
@@ -230,6 +245,20 @@ class EventIdle extends EventTap {
         let monPos = mon.getPos();
         super(monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
         _gameState.idleThreshold = random(3500, 7000);
+    }
+}
+class EventItemSpawn extends NMEvent {
+    constructor() {
+        super();
+        let locationIdx = random(0, 3);
+        let locationCoords = _gameState.itemSpawnLocations[locationIdx];
+        let itemName = DB.items[random(0, DB.items.length - 1)].name.toLowerCase();
+        if (_gameState.items[locationIdx] !== null) {
+            _gameState.items[locationIdx].destroy();
+            _gameState.items[locationIdx] = null;
+        }
+        _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName);
+        _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
     }
 }
 
@@ -260,7 +289,7 @@ function newMon(scene, x, y, kind) {
         if (x < HALF_SPRITE_SIZE) x = HALF_SPRITE_SIZE;
         if (x >= BASE_SIZE - HALF_SPRITE_SIZE) x = BASE_SIZE - HALF_SPRITE_SIZE;
         if (y < 56) y = 56;
-        if (y >= 180 - HALF_SPRITE_SIZE) y = 180 - HALF_SPRITE_SIZE; // don't clip over button row
+        if (y >= BASE_SIZE - HALF_SPRITE_SIZE) y = BASE_SIZE - HALF_SPRITE_SIZE;
 
         this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
         this.isMoving = true;
@@ -287,6 +316,7 @@ function newMon(scene, x, y, kind) {
 }
 
 function create() {
+    _gameState.scene = this;
 
     // Background
     this.add.image(WIDTH / 2, 30, 'sky');
@@ -322,15 +352,19 @@ function create() {
     //game.scale.resize(WIDTH, HEIGHT);
     //game.scale.setZoom(ZOOM);
 
-    events.push(new EventMonSpawn(this, 20, HEIGHT / 2, "trolmon"));
-    events.push(new EventMonSpawn(this, 60, HEIGHT / 2, "drakano"));
-    events.push(new EventMonSpawn(this, 100, HEIGHT / 2, "nessya"));
-    events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
-    events.push(new EventPlayerSpawn(this, 160, HEIGHT / 2, "gooh"));
+    events.push(new EventMonSpawn(this, 18, HEIGHT / 2, "trolmon"));
+    events.push(new EventMonSpawn(this, 53, HEIGHT / 2, "drakano"));
+    events.push(new EventMonSpawn(this, 88, HEIGHT / 2, "nessya"));
+    if (DEBUG) events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
+    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, "gooh"));
 
     if (DEBUG) {
         GRAPHICS = this.add.graphics();
         GRAPHICS.fillStyle(0xffff00, 1.0); // yellow, full alpha
+
+        for (let itemSpawnLocation of _gameState.itemSpawnLocations) {
+            GRAPHICS.fillRect(itemSpawnLocation[0], itemSpawnLocation[1], 1, 1);
+        }
     }
 }
 
@@ -354,6 +388,14 @@ function gameMaster(t, dt, events) {
         if (mon !== null) events.push(new EventIdle());
     } else {
         _gameState.idleTime += dt;
+    }
+
+    // Item spawn
+    if (_gameState.itemWaitTime > _gameState.itemWaitThreshold) {
+        events.push(new EventItemSpawn());
+        _gameState.itemWaitTime = 0;
+    } else {
+        _gameState.itemWaitTime += dt;
     }
 }
 

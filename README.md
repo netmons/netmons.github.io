@@ -4,8 +4,7 @@
 
 ## Backlog
 
-* Food art
-* Food spawn events
+* Item collision
 
 * Evolution events
 
