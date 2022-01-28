@@ -110,9 +110,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
             melee: 1,
             range: null,
             evo: {
-                "1113": 2,
-                "1222": 3,
-                "2333": 4,
+                "1113": "Trolmon",
+                "1222": "Drakano",
+                "2333": "Nessya",
             }
         },
         {
@@ -195,7 +195,7 @@ let _gameState = {
     idleTime: 0,
     idleThreshold: 5000,
     itemWaitTime: 0,
-    itemWaitThreshold: 10000,
+    itemWaitThreshold: 8000,
     itemSpawnLocations: [ // 0 top left, 1 top right, 2 bottom left, 3 bottom right
         [HALF_GRID_SIZE, GRID_SIZE * 2 + HALF_GRID_SIZE],
         [GRID_SIZE * 7 + HALF_GRID_SIZE, GRID_SIZE * 2 + HALF_GRID_SIZE],
@@ -279,6 +279,20 @@ class EventItemConsume extends NMEvent {
                 _gameState.stomach.shift();
             }
             if (DEBUG) console.log("Stomach:", _gameState.stomach);
+            if (_gameState.stomach.length === 4) {
+                let stomachString = _gameState.stomach.sort().reduce((a, b) => String(a) + String(b));
+                let monKind = _gameState.mon.kind;
+                let maybeEvolution = DB.mons.filter(mon => mon.name === monKind).map(mon => mon.evo[stomachString]).shift();
+                if (maybeEvolution !== undefined) events.push(new EventEvolution(maybeEvolution));
+            }
+        }
+    }
+}
+class EventEvolution extends NMEvent {
+    constructor(toMon) {
+        super();
+        if (_gameState.mon !== null) {
+            _gameState.mon.evolve(toMon);
         }
     }
 }
@@ -286,13 +300,13 @@ class EventItemConsume extends NMEvent {
 // Mon
 function newMon(scene, x, y, kind) {
     function _checkKind(kind) {
-        if (DB.mons.map(m => m.name.toLowerCase()).some(n => n === kind)) {
+        if (DB.mons.map(m => m.name).some(n => n === kind)) {
             return kind;
         }
-        return 'glitchee';
+        return 'Glitchee';
     }
     kind = _checkKind(kind);
-    let sprite = scene.add.follower(null, x, y, kind);
+    let sprite = scene.add.follower(null, x, y, kind.toLowerCase());
     sprite.setDepth(y);
 
     function getPos() {
@@ -341,6 +355,16 @@ function newMon(scene, x, y, kind) {
             this.moveTo(item.x, item.y, onMoveToItemUpdate(this, item, positionIdx));
         }
     }
+    function evolve(toKind) {
+        toKind = _checkKind(toKind);
+        let pos = this.getPos();
+        let flip = this.sprite.flipX;
+        this.sprite.destroy();
+        this.sprite = this.scene.add.follower(null, pos.x, pos.y, toKind.toLowerCase())
+        this.sprite.setFlipX(flip);
+        this.sprite.setDepth(y);
+        this.kind = toKind;
+    }
 
     return {
         kind: kind,
@@ -348,7 +372,8 @@ function newMon(scene, x, y, kind) {
         scene: scene,
         getPos: getPos,
         moveTo: moveTo,
-        moveToItem: moveToItem
+        moveToItem: moveToItem,
+        evolve: evolve
     }
 }
 
@@ -394,11 +419,13 @@ function create() {
     //game.scale.resize(WIDTH, HEIGHT);
     //game.scale.setZoom(ZOOM);
 
-    events.push(new EventMonSpawn(this, 18, HEIGHT / 2, "trolmon"));
-    events.push(new EventMonSpawn(this, 53, HEIGHT / 2, "drakano"));
-    events.push(new EventMonSpawn(this, 88, HEIGHT / 2, "nessya"));
-    if (DEBUG) events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
-    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, "gooh"));
+    if (DEBUG) {
+        events.push(new EventMonSpawn(this, 18, HEIGHT / 2, "Trolmon"));
+        events.push(new EventMonSpawn(this, 53, HEIGHT / 2, "Drakano"));
+        events.push(new EventMonSpawn(this, 88, HEIGHT / 2, "Nessya"));
+        events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
+    }
+    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, "Gooh"));
 
     if (DEBUG) {
         GRAPHICS = this.add.graphics();

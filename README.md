@@ -4,10 +4,10 @@
 
 ## Backlog
 
-* Evolution events
-
 * Game state in URL
 * Title screen
+
+* Evolution FX
 
 * Battle item spawn
 * Battle start via URL prompt
