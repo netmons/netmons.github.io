@@ -190,7 +190,8 @@ let events = [];
 let _gameState = {
     scene: null,
     mon: null,
-    stomach: null,
+    stomach: [],
+    maxStomachSize: 4,
     idleTime: 0,
     idleThreshold: 5000,
     itemWaitTime: 0,
@@ -252,13 +253,14 @@ class EventItemSpawn extends NMEvent {
         super();
         let locationIdx = random(0, 3);
         let locationCoords = _gameState.itemSpawnLocations[locationIdx];
-        let itemName = DB.items[random(0, DB.items.length - 1)].name.toLowerCase();
+        let itemName = DB.items[random(0, DB.items.length - 1)].name;
         if (_gameState.items[locationIdx] !== null) {
             _gameState.items[locationIdx].destroy();
             _gameState.items[locationIdx] = null;
         }
-        _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName).setInteractive();
+        _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName.toLowerCase()).setInteractive();
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
+        _gameState.items[locationIdx].itemName = itemName;
         _gameState.items[locationIdx].on('pointerdown', (pointer) => {
             let x = Math.floor(pointer.x);
             let y = Math.floor(pointer.y);
@@ -270,8 +272,13 @@ class EventItemConsume extends NMEvent {
     constructor(mon, itemIdx) {
         super();
         if (_gameState.items[itemIdx] !== null) {
+            _gameState.stomach.push(DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName));
             _gameState.items[itemIdx].destroy();
             _gameState.items[itemIdx] = null;
+            while (_gameState.stomach.length > _gameState.maxStomachSize) {
+                _gameState.stomach.shift();
+            }
+            if (DEBUG) console.log("Stomach:", _gameState.stomach);
         }
     }
 }

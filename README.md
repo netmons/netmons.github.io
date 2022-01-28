@@ -4,8 +4,6 @@
 
 ## Backlog
 
-* Item collision
-
 * Evolution events
 
 * Game state in URL
@@ -21,6 +19,8 @@
 * Sky, day, night art
 * Move/animate sky
 * Animated field
+
+* ? 💩 support
 
 ## GGJ2022
 
