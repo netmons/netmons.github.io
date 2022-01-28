@@ -6,7 +6,6 @@
 
 * Game state in URL
 * Title screen
-* Your mon in favicon
 
 * Evolution FX
 

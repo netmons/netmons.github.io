@@ -274,7 +274,9 @@ class EventItemConsume extends NMEvent {
     constructor(mon, itemIdx) {
         super();
         if (_gameState.items[itemIdx] !== null) {
-            _gameState.stomach.push(DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName));
+            let itemId = DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName);
+            _gameState.stomach.push(itemId);
+            if (itemId == 0) _gameState.stomach = [];
             _gameState.items[itemIdx].destroy();
             _gameState.items[itemIdx] = null;
             while (_gameState.stomach.length > _gameState.maxStomachSize) {
@@ -282,7 +284,7 @@ class EventItemConsume extends NMEvent {
             }
             if (DEBUG) console.log("Stomach:", _gameState.stomach);
             if (_gameState.stomach.length === 4) {
-                let stomachString = _gameState.stomach.sort().reduce((a, b) => String(a) + String(b));
+                let stomachString = [..._gameState.stomach].sort().reduce((a, b) => String(a) + String(b));
                 if (DEBUG) console.log("StomachStr:", stomachString);
                 let monKind = _gameState.mon.kind;
                 let maybeEvolution = DB.mons.filter(mon => mon.name === monKind).map(mon => mon.evo[stomachString]).shift();
@@ -296,6 +298,7 @@ class EventEvolution extends NMEvent {
         super();
         if (_gameState.mon !== null) {
             _gameState.mon.evolve(toMon);
+            setFavicon(`a/su${toMon.toLowerCase()}.png`);
         }
     }
 }
@@ -355,13 +358,12 @@ function newMon(scene, x, y, kind) {
         }
     }
     function evolve(toKind) {
-        toKind = _checkKind(toKind);
         let pos = this.getPos();
         let flip = this.sprite.flipX;
         this.sprite.destroy();
         this.sprite = this.scene.add.follower(null, pos.x, pos.y, toKind.toLowerCase())
         this.sprite.setFlipX(flip);
-        this.sprite.setDepth(y);
+        this.sprite.setDepth(pos.y);
         this.kind = toKind;
     }
 
@@ -379,7 +381,6 @@ function newMon(scene, x, y, kind) {
 function onTap(pointer) {
     let x = Math.floor(pointer.x);
     let y = Math.floor(pointer.y);
-    if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
     events.push(new EventTap(x, y));
 }
 function create() {
@@ -477,6 +478,10 @@ function monRunTimeForDistance(distance) {
 }
 function random(min, max) {
     return Phaser.Math.RND.between(min, max);
+}
+function setFavicon(url) {
+    let link = document.querySelector("link[rel~='icon']");
+    link.href = url;
 }
 
 // Fullscreen
