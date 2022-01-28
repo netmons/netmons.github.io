@@ -21,9 +21,13 @@
 * Tab events to attacks (melee/range)
 * Balance
 
+* Sky, day, night art
+* Move/animate sky
+* Animated field
+
 ## GGJ2022
 
-Theme: **Duality**
+Theme: **duality**
 
 ## Credits
 
