@@ -201,10 +201,25 @@ class EventTap extends NMEvent {
         return null;
     }
 }
+class EventMonSpawn extends NMEvent {
+    constructor(scene, x, y, kind) {
+        super();
+        this.mon = newMon(scene, x, y, kind);
+    }
+    update(t, dt) {
+        return null;
+    }
+}
+class EventPlayerSpawn extends EventMonSpawn {
+    constructor(scene, x, y, kind) {
+        super(scene, x, y, kind);
+        mon = this.mon;
+    }
+}
 
 // Mon
-function newMon(scene, x, y, type) {
-    let sprite = scene.add.follower(null, x, y, type);
+function newMon(scene, x, y, kind) {
+    let sprite = scene.add.follower(null, x, y, kind);
     sprite.setDepth(y);
 
     function getPos() {
@@ -238,7 +253,7 @@ function newMon(scene, x, y, type) {
     }
 
     return {
-        type: type,
+        kind: kind,
         sprite: sprite,
         scene: scene,
         isMoving: false,
@@ -253,11 +268,6 @@ function create() {
     // Background
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
-
-    rival = newMon(this, 80, HEIGHT / 2, "gooh");
-    newMon(this, 50, HEIGHT / 2, "trolmon");
-    newMon(this, 110, HEIGHT / 2, "nessya");
-    mon = newMon(this, 170, HEIGHT / 2, "drakano");
 
     // UI
     /*
@@ -288,6 +298,11 @@ function create() {
     //game.scale.scaleMode = Phaser.Scale.NONE;
     //game.scale.resize(WIDTH, HEIGHT);
     //game.scale.setZoom(ZOOM);
+
+    events.push(new EventMonSpawn(this, 20, HEIGHT / 2, "trolmon"));
+    events.push(new EventMonSpawn(this, 60, HEIGHT / 2, "drakano"));
+    events.push(new EventMonSpawn(this, 100, HEIGHT / 2, "nessya"));
+    events.push(new EventPlayerSpawn(this, 160, HEIGHT / 2, "gooh"));
 
     if (DEBUG) {
         GRAPHICS = this.add.graphics();
