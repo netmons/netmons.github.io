@@ -167,11 +167,13 @@ function loadAsset(scene, name) {
     scene.load.image(name.toLowerCase(), `a/su${name.toLowerCase()}.png`);
 }
 function preload() {
+    /*
     this.load.image('btn_back', 'a/back.png');
     this.load.image('btn1', 'a/su1.png');
     this.load.image('btn2', 'a/su2.png');
     this.load.image('btn3', 'a/su3.png');
     this.load.image('btn4', 'a/su4.png');
+    */
 
     this.load.image('sky', 'a/susky.png');
     this.load.image('ground', 'a/sugrass.png');
