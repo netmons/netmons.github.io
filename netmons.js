@@ -178,22 +178,31 @@ function preload() {
     this.load.image('nessya', 'a/sunessya.png');
 }
 
-let taps = []
+let events = [];
 let GRAPHICS;
 let mon;
 let rival;
-/*
-function newEntityManager(scene) {
-    function add() {
 
+// Events
+class NMEvent {
+    constructor() { }
+    update(t, dt) { return null; }
+}
+class EventTap extends NMEvent {
+    constructor(x, y) {
+        super();
+        this.x = x;
+        this.y = y;
     }
-    return {
-        _scene: scene,
-        _entities: [],
-        add: add
+    update(t, dt) {
+        if (mon != null) {
+            mon.moveTo(this.x, this.y);
+        }
+        return null;
     }
 }
-*/
+
+// Mon
 function newMon(scene, x, y, type) {
     let sprite = scene.add.follower(null, x, y, type);
     sprite.setDepth(y);
@@ -273,27 +282,28 @@ function create() {
         let x = Math.floor(pointer.x);
         let y = Math.floor(pointer.y);
         if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
-        taps.push({x, y});
+        events.push(new EventTap(x, y));
     }, this);
 
     //game.scale.scaleMode = Phaser.Scale.NONE;
     //game.scale.resize(WIDTH, HEIGHT);
     //game.scale.setZoom(ZOOM);
 
-    GRAPHICS = this.add.graphics();
-    GRAPHICS.fillStyle(0xffff00, 1.0); // yellow, full alpha
+    if (DEBUG) {
+        GRAPHICS = this.add.graphics();
+        GRAPHICS.fillStyle(0xffff00, 1.0); // yellow, full alpha
+    }
 }
 
 function update(t, dt) {
-    for (let tap of taps) {
-        if (DEBUG) GRAPHICS.fillRect(tap.x, tap.y, 1, 1);
-        if (DEBUG) console.log(`${mon.getPos().x} ${mon.getPos().y}`);
-
-        if (mon != null) {
-            mon.moveTo(tap.x, tap.y);
-        }
+    let event = undefined;
+    let newEvent = null;
+    let leftovers = [];
+    while(typeof(event = events.shift()) !== 'undefined') {
+        newEvent = event.update(t, dt);
+        if (newEvent !== null) leftovers.push(newEvent);
     }
-    taps = [];
+    Array.prototype.push.apply(events, leftovers);
 }
 
 // Library

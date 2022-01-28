@@ -4,8 +4,6 @@
 
 ## Backlog
 
-* Event system
-* Refactor movement to events
 * Idle event
 * Food art
 * Food spawn events
@@ -13,6 +11,8 @@
 * Evolution events
 
 * Game state in URL
+* Title screen
+
 * Battle item spawn
 * Battle start via URL prompt
 
