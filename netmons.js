@@ -172,6 +172,8 @@ function preload() {
     this.load.image('ground', 'a/sugrass.png');
 
     // Mons
+    this.load.image('gooh', 'a/sugooh.png');
+    this.load.image('trolmon', 'a/sutrolmon.png');
     this.load.image('drakano', 'a/sudrakano.png');
 }
 
@@ -228,15 +230,18 @@ function create() {
     this.add.image(WIDTH / 2, 30, 'sky');
     this.add.image(WIDTH / 2, 150, 'ground');
 
-    rival = newMon(this, 80, HEIGHT / 2, "drakano");
+    rival = newMon(this, 80, HEIGHT / 2, "gooh");
+    newMon(this, 50, HEIGHT / 2, "trolmon");
     mon = newMon(this, 170, HEIGHT / 2, "drakano");
 
     // UI
+    /*
     this.add.image(225, 15, 'btn_back');
     this.add.image(30, 210, 'btn1');
     this.add.image(90, 210, 'btn2');
     this.add.image(150, 210, 'btn3');
     this.add.image(210, 210, 'btn4');
+    */
 
     /*
     // Use for flame attack later
