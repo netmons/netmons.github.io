@@ -292,14 +292,13 @@ function newMon(scene, x, y, kind) {
         if (y >= BASE_SIZE - HALF_SPRITE_SIZE) y = BASE_SIZE - HALF_SPRITE_SIZE;
 
         this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
-        this.isMoving = true;
         let self = this;
         this.sprite.startFollow({
             positionOnPath: true,
             duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
             repeat: 0,
             rotateToPath: false,
-            onComplete: () => { self.isMoving = false; },
+            onComplete: () => { },
             onUpdate: () => { self.sprite.setDepth(self.getPos().y); }
         });
     }
@@ -308,8 +307,6 @@ function newMon(scene, x, y, kind) {
         kind: kind,
         sprite: sprite,
         scene: scene,
-        isMoving: false,
-        isIdling: false,
         getPos: getPos,
         moveTo: moveTo
     }
