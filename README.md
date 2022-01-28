@@ -6,12 +6,12 @@
 
 * Game state in URL
 * Title screen
+* Your mon in favicon
 
 * Evolution FX
 
 * Battle item spawn
 * Battle start via URL prompt
-
 * Attack art
 * Tab events to attacks (melee/range)
 * Balance
@@ -21,6 +21,7 @@
 * Animated field
 
 * ? 💩 support
+* ? Happiness support
 
 ## GGJ2022
 
