@@ -257,7 +257,7 @@ class EventItemSpawn extends NMEvent {
             _gameState.items[locationIdx].destroy();
             _gameState.items[locationIdx] = null;
         }
-        _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName);
+        _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName).setInteractive();
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
     }
 }
@@ -315,12 +315,18 @@ function newMon(scene, x, y, kind) {
     }
 }
 
+function onTap(pointer) {
+    let x = Math.floor(pointer.x);
+    let y = Math.floor(pointer.y);
+    if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
+    events.push(new EventTap(x, y));
+}
 function create() {
     _gameState.scene = this;
 
     // Background
-    this.add.image(WIDTH / 2, 30, 'sky');
-    this.add.image(WIDTH / 2, 150, 'ground');
+    let sky = this.add.image(WIDTH / 2, 30, 'sky').setInteractive();
+    let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
 
     // UI
     /*
@@ -341,12 +347,11 @@ function create() {
     });
     */
 
-    this.input.on('pointerdown', function (pointer) {
-        let x = Math.floor(pointer.x);
-        let y = Math.floor(pointer.y);
-        if (DEBUG) console.log(`down: ${x}, ${y}, frame: ${this.game.loop.frame}`);
-        events.push(new EventTap(x, y));
-    }, this);
+    /*
+    this.input.on('pointerdown', onTap, this);
+    */
+    sky.on('pointerdown', onTap);
+    ground.on('pointerdown', onTap);
 
     //game.scale.scaleMode = Phaser.Scale.NONE;
     //game.scale.resize(WIDTH, HEIGHT);
