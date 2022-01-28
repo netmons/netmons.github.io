@@ -158,9 +158,6 @@ let config = {
 
 let game = new Phaser.Game(config);
 
-// Pyxel color palette
-// https://github.com/kitao/pyxel#color-palette
-
 function preload() {
     this.load.image('btn_back', 'a/back.png');
     this.load.image('btn1', 'a/su1.png');

@@ -1,6 +1,6 @@
 # NetMons
 
-*A Pokemon-Tamagotchi-Digimon-like at best, a digital goldfish at worst.*
+*A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
 
 ## Backlog
 
@@ -26,6 +26,12 @@
 ## GGJ2022
 
 Theme: **duality**
+
+Inspiration:
+
+* https://digimon.fandom.com/wiki/Digimon_Virtual_Pet
+* https://www.pokewiki.de/Pok%C3%A9mon_Pikachu
+* https://github.com/kitao/pyxel#color-palette
 
 ## Credits
 
