@@ -283,7 +283,7 @@ class EventItemSpawn extends NMEvent {
     constructor() {
         super();
         let locationIdx = random(0, 3);
-        let locationCoords = _gameState.itemSpawnLocations[locationIdx];
+        let locationCoords = [..._gameState.itemSpawnLocations[locationIdx]];
         locationCoords[0] += random(-2, 2);
         locationCoords[1] += random(-2, 2);
         let itemName = DB.items[random(0, DB.items.length - 1)].name;
