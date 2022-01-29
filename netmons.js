@@ -475,9 +475,7 @@ function newMon(scene, x, y, kind) {
 }
 
 function onTap(pointer) {
-    let x = Math.floor(pointer.x);
-    let y = Math.floor(pointer.y);
-    events.push(new EventTap(x, y));
+    events.push(new EventTap(Math.floor(pointer.x), Math.floor(pointer.y)));
 }
 function create() {
     _gameState.scene = this;
