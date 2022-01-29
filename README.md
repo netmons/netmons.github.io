@@ -4,20 +4,19 @@
 
 ## Backlog
 
-* Game state in URL
 * Title screen
 
 * Evolution FX
+
+* Sky, day, night art
+* Move/animate sky
+* Animated field
 
 * Battle item spawn
 * Battle start via URL prompt
 * Attack art
 * Tab events to attacks (melee/range)
 * Balance
-
-* Sky, day, night art
-* Move/animate sky
-* Animated field
 
 * ? 💩 support
 * ? Happiness support

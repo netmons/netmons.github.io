@@ -141,6 +141,12 @@ const DB = { // Stats: HP, Atk, Def, Spd
         },
     ]
 }
+function sanitizeKind(kind) {
+    if (DB.mons.map(m => m.name).some(n => n === kind)) {
+        return kind;
+    }
+    return 'Glitchee';
+}
 
 let config = {
     type: Phaser.AUTO,
@@ -240,6 +246,7 @@ class EventPlayerSpawn extends EventMonSpawn {
     constructor(scene, x, y, kind) {
         super(scene, x, y, kind);
         _gameState.mon = this.mon;
+        setFavicon(`a/su${_gameState.mon.kind.toLowerCase()}.png`);
     }
 }
 const IDLE_RANGE = 32;
@@ -276,12 +283,12 @@ class EventItemConsume extends NMEvent {
         if (_gameState.items[itemIdx] !== null) {
             let itemId = DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName);
             _gameState.stomach.push(itemId);
-            if (itemId == 0) _gameState.stomach = [];
             _gameState.items[itemIdx].destroy();
             _gameState.items[itemIdx] = null;
-            while (_gameState.stomach.length > _gameState.maxStomachSize) {
+            while (_gameState.stomach.length > _gameState.maxStomachSize || (itemId == 0 && _gameState.stomach.length > 0)) {
                 _gameState.stomach.shift();
             }
+            writeStateToURL();
             if (DEBUG) console.log("Stomach:", _gameState.stomach);
             if (_gameState.stomach.length === 4) {
                 let stomachString = [..._gameState.stomach].sort().reduce((a, b) => String(a) + String(b));
@@ -299,19 +306,14 @@ class EventEvolution extends NMEvent {
         if (_gameState.mon !== null) {
             _gameState.mon.evolve(toMon);
             setFavicon(`a/su${toMon.toLowerCase()}.png`);
+            writeStateToURL();
         }
     }
 }
 
 // Mon
 function newMon(scene, x, y, kind) {
-    function _checkKind(kind) {
-        if (DB.mons.map(m => m.name).some(n => n === kind)) {
-            return kind;
-        }
-        return 'Glitchee';
-    }
-    kind = _checkKind(kind);
+    kind = sanitizeKind(kind);
     let sprite = scene.add.follower(null, x, y, kind.toLowerCase());
     sprite.setDepth(y);
 
@@ -425,7 +427,10 @@ function create() {
         events.push(new EventMonSpawn(this, 88, HEIGHT / 2, "Nessya"));
         events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
     }
-    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, "Gooh"));
+
+    let initialState = readStateFromURL();
+    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, initialState.kind));
+    _gameState.stomach = initialState.stomach;
 
     if (DEBUG) {
         GRAPHICS = this.add.graphics();
@@ -482,6 +487,38 @@ function random(min, max) {
 function setFavicon(url) {
     let link = document.querySelector("link[rel~='icon']");
     link.href = url;
+}
+function readStateFromURL() {
+    let url = new URL(window.location.href);
+    let parts = String(url.searchParams.get('s') || '').trim().split('-')
+    let kind = 'Gooh';
+    let stomach = [];
+    for (let part of parts) {
+        switch(part[0]) {
+            case 'k':
+                kind = part.substring(1);
+                break;
+            case 's':
+                stomach = Array.from(part.substring(1)).map(s => Number(s));
+                break;
+        }
+    }
+    return {
+        kind: sanitizeKind(kind),
+        stomach: stomach
+    }
+}
+function writeStateToURL() {
+    let kind = _gameState.mon.kind;
+    let stomach = "";
+    if (_gameState.stomach.length > 0) {
+        stomach = _gameState.stomach.reduce((a, b) => String(a) + String(b));
+    }
+
+    let stateStr = String(`k${kind}-s${stomach}`);
+    var queryParams = new URLSearchParams(window.location.search);
+    queryParams.set("s", stateStr);
+    history.replaceState(null, null, "?"+queryParams.toString());
 }
 
 // Fullscreen
