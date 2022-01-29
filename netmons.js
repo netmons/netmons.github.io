@@ -221,7 +221,8 @@ let _gameState = {
         null,
         null,
         null
-    ]
+    ],
+    friends: []
 };
 
 // Events
@@ -329,7 +330,25 @@ class EventCallFriend extends NMEvent {
         let friendState = readStateFromURL(friendURL);
         let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
         let y = 150 + random(-BASE_SIZE / 4, BASE_SIZE / 4);
-        events.push(new EventMonSpawn(x, y, friendState.kind));
+        let event = new EventMonSpawn(x, y, friendState.kind);
+        events.push(event);
+        _gameState.friends.push(event.mon);
+        events.push(new EventFriendLeave());
+    }
+}
+class EventFriendLeave extends NMEvent {
+    constructor() {
+        super();
+        this.timer = 0;
+    }
+    update(t, dt) {
+        this.timer += dt;
+        if (this.timer >= 20000) {
+            let friend = _gameState.friends.shift();
+            if (friend !== undefined) friend.leave();
+            return null;
+        }
+        return this;
     }
 }
 
@@ -390,6 +409,21 @@ function newMon(scene, x, y, kind) {
         this.sprite.setDepth(pos.y);
         this.kind = toKind;
     }
+    function leave() {
+        let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
+        let y = 150 + random(-BASE_SIZE / 4, BASE_SIZE / 4);
+        let pos = this.getPos();
+        this.sprite.setFlipX(x > pos.x);
+
+        this.sprite.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(x, y));
+        this.sprite.startFollow({
+            positionOnPath: true,
+            duration: monRunTimeForDistance(distance(pos.x, pos.y, x, y)),
+            repeat: 0,
+            rotateToPath: false,
+            onComplete: () => { this.sprite.destroy() }
+        });
+    }
 
     return {
         kind: kind,
@@ -398,7 +432,8 @@ function newMon(scene, x, y, kind) {
         getPos: getPos,
         moveTo: moveTo,
         moveToItem: moveToItem,
-        evolve: evolve
+        evolve: evolve,
+        leave: leave
     }
 }
 

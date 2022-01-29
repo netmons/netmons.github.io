@@ -22,9 +22,7 @@ Battle system:
 
 Visitor system (cheap alternative to battle system):
 
-* Visitor via URL prompt, joining
 * Visitor idling
-* Visitor leaving
 
 * ? More mons
 
