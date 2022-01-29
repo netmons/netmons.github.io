@@ -561,7 +561,6 @@ function gameMaster(t, dt, events) {
         }
     }
 
-
     // Item spawn
     if (_gameState.itemWaitTime > _gameState.itemWaitThreshold) {
         events.push(new EventItemSpawn());
