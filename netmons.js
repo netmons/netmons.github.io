@@ -520,7 +520,7 @@ function create() {
 }
 
 function update(t, dt) {
-    gameMaster(t, dt, events)
+    gameMaster(t, dt);
 
     let event = undefined;
     let newEvent = null;
@@ -533,7 +533,7 @@ function update(t, dt) {
 }
 
 // Game Master populates the event queue based on game state
-function gameMaster(t, dt, events) {
+function gameMaster(t, dt) {
     // Idling
     if (_gameState.mon !== null) {
         if (_gameState.mon.idleTime > _gameState.idleThreshold) {
