@@ -1,13 +1,5 @@
 "use strict";
 
-/*
-* Each Mon has a (typed) Special Attack
-* Each Mon has a (untyped) Neutral Attack
-* Range and melee attacks
-* Range can be avoided, melee attacks only work in melee range
-* Utility abilities?
-*/
-
 const DEBUG = false;
 
 const BASE_SIZE = 240;
@@ -19,6 +11,12 @@ const ITEM_SIZE = HALF_SPRITE_SIZE;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
 
+/*
+* Each Mon has a (typed) Special Attack
+* Each Mon has a (untyped) Neutral Attack
+* Range can be avoided, melee attacks only work in melee range
+* Utility abilities?
+*/
 const TB = 1.5; // Bonus
 const TN = 1.0; // Neutral
 const TM = 0.5; // Malus
@@ -152,6 +150,7 @@ const DB = { // Stats: HP, Atk, Def, Spd
         "sound off": {url: "", embeddable: true},
     }
 }
+
 function sanitizeKind(kind) {
     if (DB.mons.map(m => m.name).some(n => n === kind)) {
         return kind;
@@ -177,7 +176,6 @@ let config = {
         update: update
     }
 };
-
 let game = new Phaser.Game(config);
 
 function loadAsset(scene, name) {
