@@ -1,4 +1,4 @@
-# NetMons
+# [NetMons](https://netmons.net)
 
 *A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
 
