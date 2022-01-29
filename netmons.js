@@ -20,7 +20,6 @@ const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
 const ZOOM = getScale();
 function getScale() {
-    console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`);
     if (window.innerWidth >= 500 && window.innerHeight >= 530) {
         return 2;
     }
@@ -144,7 +143,14 @@ const DB = { // Stats: HP, Atk, Def, Spd
         },
     ],
     phonebook: {
-        "ghostbusters": "https://www.youtube.com/watch?v=Fe93CLbHjxQ&autoplay=1&rel=0",
+        "ghostbusters": {url: "https://www.youtube.com/watch?v=Fe93CLbHjxQ", embeddable: false},
+        "god": {url: "https://www.youtube.com/watch?v=79fzeNUqQbQ", embeddable: false},
+        "rick astley": {url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", embeddable: false},
+        "adventures": {url: youtubeAutoplayURL("MkNeIUgNPQ8"), embeddable: true}, // A Himitsu
+        "stop": {url: "", embeddable: true},
+        "mute": {url: "", embeddable: true},
+        "off": {url: "", embeddable: true},
+        "sound off": {url: "", embeddable: true},
     }
 }
 function sanitizeKind(kind) {
@@ -325,9 +331,19 @@ class EventCallFriend extends NMEvent {
         if (friendURL === "") return;
         let phonebookEntry = DB.phonebook[friendURL.toLowerCase()];
         if (phonebookEntry !== undefined) {
-            window.location.href = phonebookEntry;
-            return;
+            this._play(phonebookEntry);
+        } else {
+            this._inviteFriend(friendURL);
         }
+    }
+    _play(phonebookEntry) {
+        if (phonebookEntry.embeddable) {
+            document.getElementById("jukebox").src = phonebookEntry.url;
+        } else {
+            window.location.href = phonebookEntry.url;
+        }
+    }
+    _inviteFriend(friendURL) {
         let friendState = readStateFromURL(friendURL);
         let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
         let y = 150 + random(-BASE_SIZE / 4, BASE_SIZE / 4);
@@ -580,6 +596,9 @@ function writeStateToURL() {
     var queryParams = new URLSearchParams(window.location.search);
     queryParams.set("s", stateStr);
     history.replaceState(null, null, "?"+queryParams.toString());
+}
+function youtubeAutoplayURL(videoID) {
+    return `https://www.youtube-nocookie.com/embed/${videoID}?autoplay=1&rel=0&loop=1&controls=0`;
 }
 
 // Fullscreen
