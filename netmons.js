@@ -265,12 +265,8 @@ class EventMonSpawn extends NMEvent {
     }
     update(t, dt) {
         // Out of bounds? Move to center, used for friends
-        if (this.x < 0 || this.x >= BASE_SIZE || this.y < 0 || this.y >= BASE_SIZE) {
-            let targetX = BASE_SIZE / 2 + random(-40, 40);
-            let targetY = BASE_SIZE / 2 + random(-40, 40)
-            this.mon.moveTo(targetX, targetY);
-            events.push(new EventIdle(this.mon, targetX, targetY));
-        }
+        if (this.x < 0 || this.x >= BASE_SIZE || this.y < 0 || this.y >= BASE_SIZE)
+            this.mon.moveTo(BASE_SIZE / 2 + random(-40, 40), BASE_SIZE / 2 + random(-40, 40));
         return null;
     }
 }
@@ -283,27 +279,29 @@ class EventPlayerSpawn extends EventMonSpawn {
 }
 const IDLE_RANGE = 32;
 class EventIdle extends EventMonMoveTo {
-    constructor(mon, x=null, y=null) {
-        let monPos = {x, y};
-        if (x === null || y === null) monPos = mon.getPos();
-        super(mon, monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
+    constructor(mon) {
+        let pos = mon.getPos();
+        super(mon, pos.x, pos.y);
         this.idleThreshold = random(3500, 7000);
     }
     update(t, dt) {
         if (this.mon.idleCount !== undefined) {
             if (this.mon.idleTime >= this.idleThreshold) {
                 if (this.mon.idleCount > 0) {
-                    this.mon.idleCount -= 1;
                     events.push(new EventIdle(this.mon));
                 } else {
                     events.push(new EventFriendLeave(this.mon));
                     return null;
                 }
+                this.mon.idleCount -= 1;
             } else {
                 this.mon.idleTime += dt;
                 return this;
             }
         }
+        let pos = this.mon.getPos();
+        this.x = pos.x + random(-IDLE_RANGE, IDLE_RANGE);
+        this.y = pos.y + random(-IDLE_RANGE, IDLE_RANGE);
         return super.update(t, dt);
     }
 }
@@ -379,6 +377,7 @@ class EventCallFriend extends NMEvent {
         let event = new EventMonSpawn(x, y, friendState.kind);
         events.push(event);
         event.mon.idleCount = random(5, 8); // Friends leave after idling a few times
+        events.push(new EventIdle(event.mon));
     }
 }
 class EventFriendLeave extends NMEvent {
