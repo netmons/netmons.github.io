@@ -51,6 +51,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
         {
             name: "Water"
         },
+        {
+            name: "Phone"
+        },
     ],
     attacks: [
         {
