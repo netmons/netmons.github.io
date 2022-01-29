@@ -242,17 +242,22 @@ class NMEvent {
     constructor() { }
     update(t, dt) { return null; } // Return this if you want to keep event, return null if done processing and drop it
 }
-class EventTap extends NMEvent {
-    constructor(x, y, item=null) {
+class EventMonMoveTo extends NMEvent {
+    constructor(mon, x, y, item=null) {
         super();
-        _gameState.idleTime = 0;
-        if (_gameState.mon != null) {
+        if (mon !== null) {
             if (item !== null) {
-                _gameState.mon.moveToItem(item)
+                mon.moveToItem(item)
             } else {
-                _gameState.mon.moveTo(x, y);
+                mon.moveTo(x, y);
             }
         }
+    }
+}
+class EventTap extends EventMonMoveTo {
+    constructor(x, y, item=null) {
+        _gameState.idleTime = 0;
+        super(_gameState.mon, x, y, item);
     }
 }
 class EventMonSpawn extends NMEvent {
