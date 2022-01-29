@@ -234,7 +234,7 @@ let _gameState = {
 // Events
 class NMEvent {
     constructor() { }
-    update(t, dt) { return null; }
+    update(t, dt) { return null; } // Return this if you want to keep event, return null if done processing and drop it
 }
 class EventTap extends NMEvent {
     constructor(x, y, item=null) {
@@ -254,7 +254,8 @@ class EventMonSpawn extends NMEvent {
         super();
         this.mon = newMon(_gameState.scene, x, y, kind);
         // Out of bounds? Move to center, used for friends
-        if (x < 0 || x >= BASE_SIZE || y < 0 || y >= BASE_SIZE) this.mon.moveTo(BASE_SIZE / 2, BASE_SIZE / 2);
+        if (x < 0 || x >= BASE_SIZE || y < 0 || y >= BASE_SIZE)
+            this.mon.moveTo(BASE_SIZE / 2 + random(-40, 40), BASE_SIZE / 2 + random(-40, 40));
     }
 }
 class EventPlayerSpawn extends EventMonSpawn {
@@ -331,17 +332,10 @@ class EventCallFriend extends NMEvent {
         if (friendURL === "") return;
         let phonebookEntry = DB.phonebook[friendURL.toLowerCase()];
         if (phonebookEntry !== undefined) {
-            this._play(phonebookEntry);
-        } else {
-            this._inviteFriend(friendURL);
+            events.push(new EventJukebox(phonebookEntry.url, phonebookEntry.embeddable));
+            return;
         }
-    }
-    _play(phonebookEntry) {
-        if (phonebookEntry.embeddable) {
-            document.getElementById("jukebox").src = phonebookEntry.url;
-        } else {
-            window.location.href = phonebookEntry.url;
-        }
+        this._inviteFriend(friendURL);
     }
     _inviteFriend(friendURL) {
         let friendState = readStateFromURL(friendURL);
@@ -366,6 +360,21 @@ class EventFriendLeave extends NMEvent {
             return null;
         }
         return this;
+    }
+}
+class EventJukebox extends NMEvent {
+    constructor(url, embeddable=false) {
+        super();
+        this.url = url;
+        this.embeddable = embeddable;
+    }
+    update(t, dt) {
+        if (this.embeddable) {
+            document.getElementById("jukebox").src = this.url;
+        } else {
+            window.location.href = this.url;
+        }
+        return null;
     }
 }
 
