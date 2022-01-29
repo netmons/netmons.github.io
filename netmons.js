@@ -322,6 +322,7 @@ class EventCallFriend extends NMEvent {
     constructor(toMon) {
         super();
         let friendURL = prompt("Whom to call?") || "";
+        if (friendURL === "") return;
         let phonebookEntry = DB.phonebook[friendURL.toLowerCase()];
         if (phonebookEntry !== undefined) {
             window.location.href = phonebookEntry;
