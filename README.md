@@ -46,7 +46,7 @@ Theme: **duality**
 [Diversifiers](https://globalgamejam.org/news/ggj-2022-diversifiers):
 
 * [GAG10](http://www.gameaccessibilityguidelines.com/):
-    * [x] [Every action is possible via mouse click/touch](https://gameaccessibilityguidelines.com/ensure-that-all-areas-of-the-user-interface-can-be-accessed-using-the-same-input-method-as-the-gameplay/)
+    * [x] [Every action is possible via mouse click/touch, only phone commands require keyboard](https://gameaccessibilityguidelines.com/ensure-that-all-areas-of-the-user-interface-can-be-accessed-using-the-same-input-method-as-the-gameplay/)
     * [x] [Support mouse and touch](http://gameaccessibilityguidelines.com/support-more-than-one-input-device)
     * [x] [No simultaneous inputs needed](http://gameaccessibilityguidelines.com/ensure-that-multiple-simultaneous-actions-eg-clickdrag-or-swipe-are-not-required-and-included-only-as-a-supplementary-alternative-input-method)
     * [x] [Plays in both portrait and landscape](http://gameaccessibilityguidelines.com/allow-play-in-both-landscape-and-portrait)
