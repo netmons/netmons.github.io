@@ -224,7 +224,6 @@ let _gameState = {
         null,
         null
     ],
-    friends: []
 };
 
 // Events
@@ -235,14 +234,21 @@ class NMEvent {
 class EventMonMoveTo extends NMEvent {
     constructor(mon, x, y, item=null) {
         super();
-        if (mon !== null) {
-            mon.idleTime = 0;
-            if (item !== null) {
-                mon.moveToItem(item)
+        this.mon = mon;
+        this.x = x;
+        this.y = y;
+        this.item = item;
+    }
+    update(t, dt) {
+        if (this.mon !== null) {
+            this.mon.idleTime = 0;
+            if (this.item !== null) {
+                this.mon.moveToItem(this.item);
             } else {
-                mon.moveTo(x, y);
+                this.mon.moveTo(this.x, this.y);
             }
         }
+        return null;
     }
 }
 class EventTap extends EventMonMoveTo {
@@ -254,9 +260,18 @@ class EventMonSpawn extends NMEvent {
     constructor(x, y, kind) {
         super();
         this.mon = newMon(_gameState.scene, x, y, kind);
+        this.x = x;
+        this.y = y;
+    }
+    update(t, dt) {
         // Out of bounds? Move to center, used for friends
-        if (x < 0 || x >= BASE_SIZE || y < 0 || y >= BASE_SIZE)
-            this.mon.moveTo(BASE_SIZE / 2 + random(-40, 40), BASE_SIZE / 2 + random(-40, 40));
+        if (this.x < 0 || this.x >= BASE_SIZE || this.y < 0 || this.y >= BASE_SIZE) {
+            let targetX = BASE_SIZE / 2 + random(-40, 40);
+            let targetY = BASE_SIZE / 2 + random(-40, 40)
+            this.mon.moveTo(targetX, targetY);
+            events.push(new EventIdle(this.mon, targetX, targetY));
+        }
+        return null;
     }
 }
 class EventPlayerSpawn extends EventMonSpawn {
@@ -268,9 +283,28 @@ class EventPlayerSpawn extends EventMonSpawn {
 }
 const IDLE_RANGE = 32;
 class EventIdle extends EventMonMoveTo {
-    constructor(mon) {
-        let monPos = mon.getPos();
+    constructor(mon, x=null, y=null) {
+        let monPos = {x, y};
+        if (x === null || y === null) monPos = mon.getPos();
         super(mon, monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
+        this.idleThreshold = random(3500, 7000);
+    }
+    update(t, dt) {
+        if (this.mon.idleCount !== undefined) {
+            if (this.mon.idleTime >= this.idleThreshold) {
+                if (this.mon.idleCount > 0) {
+                    this.mon.idleCount -= 1;
+                    events.push(new EventIdle(this.mon));
+                } else {
+                    events.push(new EventFriendLeave(this.mon));
+                    return null;
+                }
+            } else {
+                this.mon.idleTime += dt;
+                return this;
+            }
+        }
+        return super.update(t, dt);
     }
 }
 class EventItemSpawn extends NMEvent {
@@ -344,22 +378,21 @@ class EventCallFriend extends NMEvent {
         let y = 150 + random(-BASE_SIZE / 4, BASE_SIZE / 4);
         let event = new EventMonSpawn(x, y, friendState.kind);
         events.push(event);
-        _gameState.friends.push(event.mon);
-        events.push(new EventFriendLeave());
+        event.mon.idleCount = random(5, 8); // Friends leave after idling a few times
     }
 }
 class EventFriendLeave extends NMEvent {
-    constructor() {
+    constructor(mon) {
         super();
+        this.mon = mon;
         this.timer = 0;
     }
     update(t, dt) {
-        this.timer += dt;
-        if (this.timer >= 20000) {
-            let friend = _gameState.friends.shift();
-            if (friend !== undefined) friend.leave();
+        if (this.timer >= 1000) {
+            this.mon.leave();
             return null;
         }
+        this.timer += dt;
         return this;
     }
 }

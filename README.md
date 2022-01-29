@@ -20,16 +20,19 @@ Battle system:
 * Tab events to attacks (melee/range)
 * Balance
 
-Visitor system (cheap alternative to battle system):
-
-* Visitor idling
-
-* ? More mons
-
 Bonding, chores, mood:
 
 * ? 💩 support
 * ? Happiness support
+
+Far future:
+
+* ? Friend interaction
+* ? More Mons
+
+Current errors:
+
+* Friends idle far too great distance, prob. to do with incorrect position of idling event
 
 ## GGJ2022 ![](a/nessya.png)
 
