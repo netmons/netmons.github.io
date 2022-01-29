@@ -218,7 +218,6 @@ let _gameState = {
     mon: null,
     stomach: [],
     maxStomachSize: 4,
-    idleTime: 0,
     idleThreshold: 5000,
     itemWaitTime: 0,
     itemWaitThreshold: 8000,
@@ -246,6 +245,7 @@ class EventMonMoveTo extends NMEvent {
     constructor(mon, x, y, item=null) {
         super();
         if (mon !== null) {
+            mon.idleTime = 0;
             if (item !== null) {
                 mon.moveToItem(item)
             } else {
@@ -256,7 +256,6 @@ class EventMonMoveTo extends NMEvent {
 }
 class EventTap extends EventMonMoveTo {
     constructor(x, y, item=null) {
-        _gameState.idleTime = 0;
         super(_gameState.mon, x, y, item);
     }
 }
@@ -277,11 +276,10 @@ class EventPlayerSpawn extends EventMonSpawn {
     }
 }
 const IDLE_RANGE = 32;
-class EventIdle extends EventTap {
-    constructor() {
-        let monPos = _gameState.mon.getPos();
-        super(monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
-        _gameState.idleThreshold = random(3500, 7000);
+class EventIdle extends EventMonMoveTo {
+    constructor(mon) {
+        let monPos = mon.getPos();
+        super(mon, monPos.x + random(-IDLE_RANGE, IDLE_RANGE), monPos.y + random(-IDLE_RANGE, IDLE_RANGE));
     }
 }
 class EventItemSpawn extends NMEvent {
@@ -467,6 +465,7 @@ function newMon(scene, x, y, kind) {
         kind: kind,
         sprite: sprite,
         scene: scene,
+        idleTime: 0,
         getPos: getPos,
         moveTo: moveTo,
         moveToItem: moveToItem,
@@ -553,11 +552,15 @@ function update(t, dt) {
 // Game Master populates the event queue based on game state
 function gameMaster(t, dt, events) {
     // Idling
-    if (_gameState.idleTime > _gameState.idleThreshold) {
-        if (_gameState.mon !== null) events.push(new EventIdle());
-    } else {
-        _gameState.idleTime += dt;
+    if (_gameState.mon !== null) {
+        if (_gameState.mon.idleTime > _gameState.idleThreshold) {
+            events.push(new EventIdle(_gameState.mon));
+            _gameState.idleThreshold = random(3500, 7000);
+        } else {
+            _gameState.mon.idleTime += dt;
+        }
     }
+
 
     // Item spawn
     if (_gameState.itemWaitTime > _gameState.itemWaitThreshold) {
