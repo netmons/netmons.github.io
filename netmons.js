@@ -246,8 +246,8 @@ class EventMonSpawn extends NMEvent {
     }
 }
 class EventPlayerSpawn extends EventMonSpawn {
-    constructor(scene, x, y, kind) {
-        super(scene, x, y, kind);
+    constructor(x, y, kind) {
+        super(x, y, kind);
         _gameState.mon = this.mon;
         setFavicon(`a/su${_gameState.mon.kind.toLowerCase()}.png`);
     }
@@ -443,7 +443,7 @@ function create() {
     }
 
     let initialState = readStateFromURL(window.location.href);
-    events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, initialState.kind));
+    events.push(new EventPlayerSpawn(WIDTH / 2, HEIGHT / 2, initialState.kind));
     _gameState.stomach = initialState.stomach;
 
     if (DEBUG) {
