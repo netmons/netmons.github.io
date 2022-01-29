@@ -246,6 +246,8 @@ class EventMonSpawn extends NMEvent {
     constructor(x, y, kind) {
         super();
         this.mon = newMon(_gameState.scene, x, y, kind);
+        // Out of bounds? Move to center, used for friends
+        if (x < 0 || x >= BASE_SIZE || y < 0 || y >= BASE_SIZE) this.mon.moveTo(BASE_SIZE / 2, BASE_SIZE / 2);
     }
 }
 class EventPlayerSpawn extends EventMonSpawn {
@@ -325,7 +327,9 @@ class EventCallFriend extends NMEvent {
             return;
         }
         let friendState = readStateFromURL(friendURL);
-        events.push(new EventMonSpawn(120, 120, friendState.kind));
+        let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
+        let y = 150 + random(-BASE_SIZE / 4, BASE_SIZE / 4);
+        events.push(new EventMonSpawn(x, y, friendState.kind));
     }
 }
 
