@@ -1,8 +1,8 @@
-# [NetMons](https://netmons.net)
+# [NetMons ![](a/sugooh.png)](https://netmons.net)
 
 *A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
 
-## Backlog
+## Backlog ![](a/trolmon.png)
 
 Eye candy:
 
@@ -26,12 +26,14 @@ Visitor system (cheap alternative to battle system):
 * Visitor idling
 * Visitor leaving
 
+* ? More mons
+
 Bonding, chores, mood:
 
 * ? 💩 support
 * ? Happiness support
 
-## GGJ2022
+## GGJ2022 ![](a/nessya.png)
 
 Theme: **duality**
 
@@ -58,6 +60,6 @@ Inspiration:
 * https://www.pokewiki.de/Pok%C3%A9mon_Pikachu
 * https://github.com/kitao/pyxel#color-palette
 
-## Credits
+## Credits ![](a/drakano.png)
 
 * Oliver "oz" Z.
