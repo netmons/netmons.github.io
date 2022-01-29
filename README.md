@@ -20,6 +20,12 @@ Battle system:
 * Tab events to attacks (melee/range)
 * Balance
 
+Visitor system (cheap alternative to battle system):
+
+* Visitor via URL prompt, joining
+* Visitor idling
+* Visitor leaving
+
 Bonding, chores, mood:
 
 * ? 💩 support
