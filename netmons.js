@@ -285,17 +285,16 @@ class EventItemConsume extends NMEvent {
         super();
         if (_gameState.items[itemIdx] !== null) {
             let itemId = DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName);
-            _gameState.stomach.push(itemId);
+            if (itemId < 4) _gameState.stomach.push(itemId); // 4 is Phone, below is food
+            if (itemId === 4) events.push(new EventCallFriend());
             _gameState.items[itemIdx].destroy();
             _gameState.items[itemIdx] = null;
             while (_gameState.stomach.length > _gameState.maxStomachSize || (itemId == 0 && _gameState.stomach.length > 0)) {
                 _gameState.stomach.shift();
             }
             writeStateToURL();
-            if (DEBUG) console.log("Stomach:", _gameState.stomach);
             if (_gameState.stomach.length === 4) {
                 let stomachString = [..._gameState.stomach].sort().reduce((a, b) => String(a) + String(b));
-                if (DEBUG) console.log("StomachStr:", stomachString);
                 let monKind = _gameState.mon.kind;
                 let maybeEvolution = DB.mons.filter(mon => mon.name === monKind).map(mon => mon.evo[stomachString]).shift();
                 if (maybeEvolution !== undefined) events.push(new EventEvolution(maybeEvolution));
@@ -311,6 +310,18 @@ class EventEvolution extends NMEvent {
             setFavicon(`a/su${toMon.toLowerCase()}.png`);
             writeStateToURL();
         }
+    }
+}
+class EventCallFriend extends NMEvent {
+    constructor(toMon) {
+        super();
+        let friendURL = prompt("Whom to call?");
+        if (friendURL.toLowerCase() === "ghostbusters") {
+            window.location.href = "https://www.youtube.com/watch?v=Fe93CLbHjxQ&autoplay=1&rel=0";
+            return;
+        }
+        let friendState = readStateFromURL(friendURL);
+        events.push(new EventMonSpawn(_gameState.scene, 120, 120, friendState.kind));
     }
 }
 
@@ -431,7 +442,7 @@ function create() {
         events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
     }
 
-    let initialState = readStateFromURL();
+    let initialState = readStateFromURL(window.location.href);
     events.push(new EventPlayerSpawn(this, WIDTH / 2, HEIGHT / 2, initialState.kind));
     _gameState.stomach = initialState.stomach;
 
@@ -491,8 +502,8 @@ function setFavicon(url) {
     let link = document.querySelector("link[rel~='icon']");
     link.href = url;
 }
-function readStateFromURL() {
-    let url = new URL(window.location.href);
+function readStateFromURL(urlStr) {
+    let url = new URL(urlStr);
     let parts = String(url.searchParams.get('s') || '').trim().split('-')
     let kind = 'Gooh';
     let stomach = [];
