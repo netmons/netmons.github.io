@@ -4,19 +4,23 @@
 
 ## Backlog
 
-* Title screen
+Eye candy:
 
+* Title screen + logo
 * Evolution FX
-
 * Sky, day, night art
 * Move/animate sky
 * Animated field
+
+Battle system:
 
 * Battle item spawn
 * Battle start via URL prompt
 * Attack art
 * Tab events to attacks (melee/range)
 * Balance
+
+Bonding, chores, mood:
 
 * ? 💩 support
 * ? Happiness support
