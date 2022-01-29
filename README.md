@@ -37,6 +37,14 @@ Bonding, chores, mood:
 
 Theme: **duality**
 
+* ... of you and your opponent
+* ... of you and a friend
+* ... of a Mon and its evolution
+* ... of balanced Mon nutrition
+* ... of day and night
+* ... of Mon types and attacks
+* ... of happiness and sadness
+
 [Diversifiers](https://globalgamejam.org/news/ggj-2022-diversifiers):
 
 * [GAG10](http://www.gameaccessibilityguidelines.com/):
