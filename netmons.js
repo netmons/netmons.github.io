@@ -278,6 +278,8 @@ class EventItemSpawn extends NMEvent {
         super();
         let locationIdx = random(0, 3);
         let locationCoords = _gameState.itemSpawnLocations[locationIdx];
+        locationCoords[0] += random(-2, 2);
+        locationCoords[1] += random(-2, 2);
         let itemName = DB.items[random(0, DB.items.length - 1)].name;
         if (_gameState.items[locationIdx] !== null) {
             _gameState.items[locationIdx].destroy();
@@ -287,9 +289,7 @@ class EventItemSpawn extends NMEvent {
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
         _gameState.items[locationIdx].itemName = itemName;
         _gameState.items[locationIdx].on('pointerdown', (pointer) => {
-            let x = Math.floor(pointer.x);
-            let y = Math.floor(pointer.y);
-            events.push(new EventTap(x, y, locationIdx));
+            events.push(new EventTap(Math.floor(pointer.x), Math.floor(pointer.y), locationIdx));
         });
     }
 }
