@@ -142,7 +142,10 @@ const DB = { // Stats: HP, Atk, Def, Spd
             range: 6,
             evo: {}
         },
-    ]
+    ],
+    phonebook: {
+        "ghostbusters": "https://www.youtube.com/watch?v=Fe93CLbHjxQ&autoplay=1&rel=0",
+    }
 }
 function sanitizeKind(kind) {
     if (DB.mons.map(m => m.name).some(n => n === kind)) {
@@ -316,8 +319,9 @@ class EventCallFriend extends NMEvent {
     constructor(toMon) {
         super();
         let friendURL = prompt("Whom to call?");
-        if (friendURL.toLowerCase() === "ghostbusters") {
-            window.location.href = "https://www.youtube.com/watch?v=Fe93CLbHjxQ&autoplay=1&rel=0";
+        let phonebookEntry = DB.phonebook[friendURL.toLowerCase()];
+        if (phonebookEntry !== undefined) {
+            window.location.href = phonebookEntry;
             return;
         }
         let friendState = readStateFromURL(friendURL);
@@ -503,20 +507,23 @@ function setFavicon(url) {
     link.href = url;
 }
 function readStateFromURL(urlStr) {
-    let url = new URL(urlStr);
-    let parts = String(url.searchParams.get('s') || '').trim().split('-')
+    let url;
     let kind = 'Gooh';
     let stomach = [];
-    for (let part of parts) {
-        switch(part[0]) {
-            case 'k':
-                kind = part.substring(1);
-                break;
-            case 's':
-                stomach = Array.from(part.substring(1)).map(s => Number(s));
-                break;
+    try {
+        url = new URL(urlStr);
+        let parts = String(url.searchParams.get('s') || '').trim().split('-');
+        for (let part of parts) {
+            switch(part[0]) {
+                case 'k':
+                    kind = part.substring(1);
+                    break;
+                case 's':
+                    stomach = Array.from(part.substring(1)).map(s => Number(s));
+                    break;
+            }
         }
-    }
+    } catch (_) { }
     return {
         kind: sanitizeKind(kind),
         stomach: stomach
