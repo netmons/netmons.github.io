@@ -240,9 +240,9 @@ class EventTap extends NMEvent {
     }
 }
 class EventMonSpawn extends NMEvent {
-    constructor(scene, x, y, kind) {
+    constructor(x, y, kind) {
         super();
-        this.mon = newMon(scene, x, y, kind);
+        this.mon = newMon(_gameState.scene, x, y, kind);
     }
 }
 class EventPlayerSpawn extends EventMonSpawn {
@@ -321,7 +321,7 @@ class EventCallFriend extends NMEvent {
             return;
         }
         let friendState = readStateFromURL(friendURL);
-        events.push(new EventMonSpawn(_gameState.scene, 120, 120, friendState.kind));
+        events.push(new EventMonSpawn(120, 120, friendState.kind));
     }
 }
 
@@ -436,10 +436,10 @@ function create() {
     //game.scale.setZoom(ZOOM);
 
     if (DEBUG) {
-        events.push(new EventMonSpawn(this, 18, HEIGHT / 2, "Trolmon"));
-        events.push(new EventMonSpawn(this, 53, HEIGHT / 2, "Drakano"));
-        events.push(new EventMonSpawn(this, 88, HEIGHT / 2, "Nessya"));
-        events.push(new EventMonSpawn(this, 60, HEIGHT / 2 - 40, "haXx"));
+        events.push(new EventMonSpawn(18, HEIGHT / 2, "Trolmon"));
+        events.push(new EventMonSpawn(53, HEIGHT / 2, "Drakano"));
+        events.push(new EventMonSpawn(88, HEIGHT / 2, "Nessya"));
+        events.push(new EventMonSpawn(60, HEIGHT / 2 - 40, "haXx"));
     }
 
     let initialState = readStateFromURL(window.location.href);
