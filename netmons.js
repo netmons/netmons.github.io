@@ -18,13 +18,6 @@ const HALF_SPRITE_SIZE = 32 / 2;
 const ITEM_SIZE = HALF_SPRITE_SIZE;
 const WIDTH = BASE_SIZE;
 const HEIGHT = BASE_SIZE;
-const ZOOM = getScale();
-function getScale() {
-    if (window.innerWidth >= 500 && window.innerHeight >= 530) {
-        return 2;
-    }
-    return 1;
-}
 
 const TB = 1.5; // Bonus
 const TN = 1.0; // Neutral
@@ -503,15 +496,9 @@ function create() {
     });
     */
 
-    /*
-    this.input.on('pointerdown', onTap, this);
-    */
+    //this.input.on('pointerdown', onTap, this);
     sky.on('pointerdown', onTap);
     ground.on('pointerdown', onTap);
-
-    //game.scale.scaleMode = Phaser.Scale.NONE;
-    //game.scale.resize(WIDTH, HEIGHT);
-    //game.scale.setZoom(ZOOM);
 
     if (DEBUG) {
         events.push(new EventMonSpawn(18, HEIGHT / 2, "Trolmon"));
