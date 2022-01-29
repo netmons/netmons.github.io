@@ -36,7 +36,7 @@ Theme: **duality**
     * [x] [Game starts right away](http://gameaccessibilityguidelines.com/allow-the-game-to-be-started-without-the-need-to-navigate-through-multiple-levels-of-menus)
     * [x] [No blood, no gore (but pixelized red steaks!)](http://gameaccessibilityguidelines.com/provide-an-option-to-disable-blood-and-gore/)
     * [x] [No essential info via sound alone](http://gameaccessibilityguidelines.com/ensure-no-essential-information-is-conveyed-by-sounds-alone)
-    * [x] [No speed input required](http://gameaccessibilityguidelines.com/ensure-that-speech-input-is-not-required-and-included-only-as-a-supplementary-alternative-input-method)
+    * [x] [No speech input required](http://gameaccessibilityguidelines.com/ensure-that-speech-input-is-not-required-and-included-only-as-a-supplementary-alternative-input-method)
     * [x] [Game state is auto-saved in URL](http://gameaccessibilityguidelines.com/provide-an-autosave-feature)
 * 20th Century Gaming (inspired by 1990s Tamagotchi and monster games)
 * Keep it Clean (prob. my cleanest GGJ game, yet! `;^)`)
