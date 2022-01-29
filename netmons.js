@@ -123,7 +123,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
             stats: [30, 10, 10, 10],
             melee: 3,
             range: 2,
-            evo: {}
+            evo: {
+                "2222": "Gooh"
+            }
         },
         {
             name: "Drakano",
@@ -131,7 +133,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
             stats: [30, 10, 10, 10],
             melee: 5,
             range: 4,
-            evo: {}
+            evo: {
+                "3333": "Gooh"
+            }
         },
         {
             name: "Nessya",
@@ -139,7 +143,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
             stats: [30, 10, 10, 10],
             melee: 7,
             range: 6,
-            evo: {}
+            evo: {
+                "1111": "Gooh"
+            }
         },
     ],
     phonebook: {
@@ -320,6 +326,7 @@ class EventEvolution extends NMEvent {
         super();
         if (_gameState.mon !== null) {
             _gameState.mon.evolve(toMon);
+            _gameState.stomach = [];
             setFavicon(`a/su${toMon.toLowerCase()}.png`);
             writeStateToURL();
         }
