@@ -1,5 +1,12 @@
 "use strict";
 
+/*
+Copyright (c) 2022 Oliver "oz" Z.
+This software is free-as-in-freedom and licensed under GNU AGPLv3.
+
+See LICENSE.txt for details!
+*/
+
 const DEBUG = false;
 
 const BASE_SIZE = 240;
