@@ -6,29 +6,9 @@
 ![Evolve to various creatures!](screenshots/screen1.png)
 ![Call friends and have a party at night!](screenshots/screen2.png)
 
-## Backlog ![](a/trolmon.png)
-
-Battle system:
-
-* Battle item spawn
-* Battle start via URL prompt
-* Attack art
-* Tab events to attacks (melee/range)
-* Balance
-
-Bonding, chores, mood:
-
-* ? 💩 support
-* ? Happiness support
-
-Further:
-
-* ? Friend interaction
-* ? More Mons
-* ? More phone commands
-* ? Title screen + logo
-
 ## GGJ2022 ![](a/nessya.png)
+
+This game's development started with GGJ2022 and I intend to grow it further!
 
 Theme: **duality**
 
@@ -61,6 +41,38 @@ Inspiration:
 * https://digimon.fandom.com/wiki/Digimon_Virtual_Pet
 * https://www.pokewiki.de/Pok%C3%A9mon_Pikachu
 * https://github.com/kitao/pyxel#color-palette
+
+### Backlog ![](a/trolmon.png)
+
+Battle system:
+
+* Battle item spawn
+* Battle start via URL prompt
+* Attack art
+* Tab events to attacks (melee/range)
+* Balance
+
+Bonding, chores, mood:
+
+* ? 💩 support
+* ? Happiness support
+
+Further:
+
+* ? Friend interaction
+* ? More Mons
+* ? More phone commands
+* ? Title screen + logo
+
+### Technicalities ![](a/glitchee.png)
+
+The game's resolution is 240x240 px, so it could be ported to hackable wearables like [banglejs](https://banglejs.com/).
+All assets are created for half the screen size (120x120 px) and scaled up to twice their size.
+This open two options:
+
+* Target smaller screens (below 240x240 px), at minimum of 120x120 px size, by not using the scaled up assets (`su*.png`) and reducing `BASE_SIZE` from 240 to 120
+* Support higher fidelity assets. All items are currently 8x8 px, all Mons are 16x16 px and scaled up to 16x16 px and 32x32 px respectively.
+  Assets could be overwritten to e.g. use 32x32 Mon sprites with more detail.
 
 ## Credits ![](a/drakano.png)
 
