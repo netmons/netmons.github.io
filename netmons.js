@@ -195,6 +195,8 @@ function preload() {
     loadAsset(this, "mountains");
     loadAsset(this, "ground");
 
+    loadAsset(this, "evolution");
+
     this.load.spritesheet('flowers', "a/suflowers.png", {frameWidth: 16, frameHeight: 16});
 
     for (let item of DB.items) {
@@ -205,7 +207,6 @@ function preload() {
     }
     for (let grass of DB.decor.grasses) {
         loadAsset(this, grass);
-        //this.load.image(grass, `a/su${grass}.png`);
     }
 }
 
@@ -483,6 +484,17 @@ function newMon(scene, x, y, kind) {
         this.kind = toKind;
         this.type = dbEntry.type;
         if (this.type != 2) this.sprite.setTint(_gameState.tint);
+
+        let evoFX = this.scene.add.follower(null, pos.x, pos.y, "evolution");
+        evoFX.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(pos.x, pos.y - 40));
+        evoFX.setDepth(pos.y + 1);
+        evoFX.startFollow({
+            positionOnPath: true,
+            duration: 500,
+            repeat: 0,
+            rotateToPath: false,
+            onComplete: () => { evoFX.destroy(); },
+        });
     }
     function leave() {
         let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
@@ -653,8 +665,7 @@ function minutesOfDay() {
 function celestialHeight(x) {
     return Math.round(50 - 60 * Math.sin((x / BASE_SIZE) * Math.PI));
 }
-//const DARKEST_TINT = 0x444499; // 68, 68, 153
-const DARKEST_COLOR = 0x33;
+const DARKEST_COLOR = 0x33; // Formerly:  0x444499; // 68, 68, 153
 const NIGHT_BLUE = 0x88;
 const TO_LIGHTEST = 0xFF - DARKEST_COLOR;
 function tintGame(minutes) {

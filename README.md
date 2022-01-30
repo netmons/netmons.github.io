@@ -4,13 +4,9 @@
 
 ![Be the Mon!](screenshots/screen0.png)
 ![Evolve to various creatures!](screenshots/screen1.png)
-![Invite friends and have a party at night!](screenshots/screen2.png)
+![Call friends and have a party at night!](screenshots/screen2.png)
 
 ## Backlog ![](a/trolmon.png)
-
-Eye candy:
-
-* Evolution FX
 
 Battle system:
 
@@ -29,6 +25,7 @@ Further:
 
 * ? Friend interaction
 * ? More Mons
+* ? More phone commands
 * ? Title screen + logo
 
 Errors:
