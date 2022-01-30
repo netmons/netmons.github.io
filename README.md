@@ -66,6 +66,16 @@ Inspiration:
 
 * [Oliver "oz" Z.](https://oliz.io)
 
+## Privacy, Disclaimer and Legal 💩
+
+* The game does not set any cookies, it does not track you and it does not want your personal data. You cannot comment on anything or signup for a newsletter.
+* The game is hosted on GitHub Pages (Microsoft), see their terms and policies
+* The game fetches dependencies from cdn.jsdelivr.net, see their terms and policies
+* If a certain optional game feature is used, the game may embed music from youtube-nocookie.com, see their terms and policies
+* If a certain optional game feature is used, the game may redirect to youtube.com, see their terms and policies
+
+The game may contain links to external websites or services. These links are being provided as a convenience and for informational purposes only; they do not constitute an endorsement or an approval by myself of any of the products, services or opinions of the corporation or organization or individual. I bear no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.
+
 ## License
 
 Copyright © 2022 Oliver "oz" Z.
