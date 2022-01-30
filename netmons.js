@@ -520,7 +520,7 @@ function create() {
     _gameState.scene = this;
 
     // Background
-    let sky = this.add.image(WIDTH / 2, 30, 'sky').setInteractive();
+    let sky = this.add.image(WIDTH / 2, 60, 'sky').setInteractive();
     _gameState.sun = this.add.image(2 * BASE_SIZE, 0, 'sun');
     _gameState.moon = this.add.image(2 * BASE_SIZE, 0, 'moon');
     let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
@@ -539,7 +539,7 @@ function create() {
         repeatDelay: 500
     });
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 32; i++) {
         this.add.image(0 + random(0, BASE_SIZE), 60 + random(0, BASE_SIZE - 60), 'grass' + random(0, 3));
     }
 
