@@ -8,8 +8,6 @@ Eye candy:
 
 * Title screen + logo
 * Evolution FX
-* Sky, day, night art
-* Move/animate sky
 * Animated field
 
 Battle system:

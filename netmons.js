@@ -150,12 +150,15 @@ const DB = { // Stats: HP, Atk, Def, Spd
         "sound off": {url: "", embeddable: true},
     }
 }
-
 function sanitizeKind(kind) {
     if (DB.mons.map(m => m.name).some(n => n === kind)) {
         return kind;
     }
     return 'Glitchee';
+}
+function dbEntryForKind(kind) {
+    kind = sanitizeKind(kind);
+    return DB.mons.filter(m => m.name === kind)[0];
 }
 
 let config = {
@@ -191,6 +194,8 @@ function preload() {
     */
 
     this.load.image('sky', 'a/susky.png');
+    this.load.image('sun', 'a/susun.png');
+    this.load.image('moon', 'a/sumoon.png');
     this.load.image('ground', 'a/sugrass.png');
 
     for (let item of DB.items) {
@@ -224,6 +229,9 @@ let _gameState = {
         null,
         null
     ],
+    sun: null,
+    moon: null,
+    tint: 0xFFFFFF
 };
 
 // Events
@@ -319,6 +327,7 @@ class EventItemSpawn extends NMEvent {
         }
         _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName.toLowerCase()).setInteractive();
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
+        _gameState.items[locationIdx].setTint(_gameState.tint);
         _gameState.items[locationIdx].itemName = itemName;
         _gameState.items[locationIdx].on('pointerdown', (pointer) => {
             events.push(new EventTap(Math.floor(pointer.x), Math.floor(pointer.y), locationIdx));
@@ -413,9 +422,11 @@ class EventJukebox extends NMEvent {
 
 // Mon
 function newMon(scene, x, y, kind) {
-    kind = sanitizeKind(kind);
+    let dbEntry = dbEntryForKind(kind);
+    kind = dbEntry.name;
     let sprite = scene.add.follower(null, x, y, kind.toLowerCase());
     sprite.setDepth(y);
+    sprite.setTint(_gameState.tint);
 
     function getPos() {
         return {x: this.sprite.x, y: this.sprite.y};
@@ -466,6 +477,7 @@ function newMon(scene, x, y, kind) {
         this.sprite = this.scene.add.follower(null, pos.x, pos.y, toKind.toLowerCase())
         this.sprite.setFlipX(flip);
         this.sprite.setDepth(pos.y);
+        this.sprite.setTint(_gameState.tint);
         this.kind = toKind;
     }
     function leave() {
@@ -486,6 +498,7 @@ function newMon(scene, x, y, kind) {
 
     return {
         kind: kind,
+        type: dbEntry.type,
         sprite: sprite,
         scene: scene,
         idleTime: 0,
@@ -505,6 +518,8 @@ function create() {
 
     // Background
     let sky = this.add.image(WIDTH / 2, 30, 'sky').setInteractive();
+    _gameState.sun = this.add.image(2 * BASE_SIZE, 0, 'sun');
+    _gameState.moon = this.add.image(2 * BASE_SIZE, 0, 'moon');
     let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
 
     // UI
@@ -565,6 +580,7 @@ function update(t, dt) {
 }
 
 // Game Master populates the event queue based on game state
+let celestialUpdate = 60001;
 function gameMaster(t, dt) {
     // Idling
     if (_gameState.mon !== null) {
@@ -582,6 +598,72 @@ function gameMaster(t, dt) {
         _gameState.itemWaitTime = 0;
     } else {
         _gameState.itemWaitTime += dt;
+    }
+
+    // Sun / moon
+    if (celestialUpdate >= 60000) {
+        updateCelestials();
+        celestialUpdate = 0;
+    } else {
+        celestialUpdate += dt;
+    }
+}
+/*
+Sun:
+1440 --> -BASE_SIZE / 2  (-120)
+1080 ---> 0
+720 ---> BASE_SIZE / 2   (120)
+360.0 --> BASE_SIZE      (240)
+0    -->                 (360)
+
+Moon:
+0    --> BASE_SIZE / 2   (120)
+360  --> 0               0
+720  -->                 -120 / 360
+1080 --> BASE_SIZE       (240)
+1440 -->                 (120)
+*/
+function updateCelestials() {
+    let minutes = minutesOfDay();
+    let dayProgressInBaseSizes = ((1440.0 - minutes) / 1440.0) * (2 * BASE_SIZE); // 12h ~= 1 BASE_SIZE
+    let sunX = Math.round(dayProgressInBaseSizes - (BASE_SIZE / 2));
+    _gameState.sun.x = sunX;
+    _gameState.sun.y = celestialHeight(_gameState.sun.x);
+    _gameState.moon.x = (sunX < 120) ? sunX + BASE_SIZE : sunX - BASE_SIZE;
+    _gameState.moon.y = celestialHeight(_gameState.moon.x);
+    tintGame(minutes);
+    if (DEBUG) console.log("Minutes", minutes, "sunX", _gameState.sun.x, "sunY", _gameState.sun.y, "moonX", _gameState.moon.x, "moonY", _gameState.moon.y);
+}
+function minutesOfDay() {
+    let d = new Date();
+    let hours = d.getHours();
+    let minutes = d.getMinutes();
+    return hours * 60 + minutes;
+}
+function celestialHeight(x) {
+    return Math.round(60 - 60 * Math.sin((x / BASE_SIZE) * Math.PI));
+}
+//const DARKEST_TINT = 0x444499; // 68, 68, 153
+function tintGame(minutes) {
+    let tint = 0xFFFFFF;
+    if (minutes < 360 || minutes >= 1080) {
+        let darkMinutes = (minutes < 360) ? minutes : (1440 - minutes); // 6h (360min) before and after Midnight. The closer to Midnight, the darker
+        let darkeningRate = darkMinutes / 300;
+        let rg = Math.min(Math.ceil(68 + darkeningRate * 187), 255);
+        let b = Math.min(Math.ceil(153 + darkeningRate * 187), 255);
+        tint = rgbToInt(rg, rg, b);
+    }
+    updateGameTint(tint);
+}
+function updateGameTint(tint) {
+    _gameState.tint = tint;
+    console.log("Scene children", _gameState.scene.children.length);
+    for (let gameObj of _gameState.scene.children.getChildren()) {
+        if (gameObj != _gameState.moon
+            && gameObj != _gameState.sun
+            && (gameObj != _gameState.mon.sprite || _gameState.mon.type != 2)) { // Fire types don't lack light!
+            gameObj.setTint(tint);
+        }
     }
 }
 
@@ -637,6 +719,9 @@ function writeStateToURL() {
 }
 function youtubeAutoplayURL(videoID) {
     return `https://www.youtube-nocookie.com/embed/${videoID}?autoplay=1&rel=0&loop=1&controls=0`;
+}
+function rgbToInt(red, green, blue) {
+    return Phaser.Display.Color.GetColor(red, green, blue);
 }
 
 // Fullscreen
