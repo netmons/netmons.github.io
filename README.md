@@ -6,9 +6,7 @@
 
 Eye candy:
 
-* Title screen + logo
 * Evolution FX
-* Animated field
 
 Battle system:
 
@@ -23,10 +21,11 @@ Bonding, chores, mood:
 * ? 💩 support
 * ? Happiness support
 
-Far future:
+Further:
 
 * ? Friend interaction
 * ? More Mons
+* ? Title screen + logo
 
 Errors:
 
