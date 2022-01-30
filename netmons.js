@@ -426,7 +426,7 @@ function newMon(scene, x, y, kind) {
     kind = dbEntry.name;
     let sprite = scene.add.follower(null, x, y, kind.toLowerCase());
     sprite.setDepth(y);
-    sprite.setTint(_gameState.tint);
+    if (dbEntry.type != 2) sprite.setTint(_gameState.tint);
 
     function getPos() {
         return {x: this.sprite.x, y: this.sprite.y};
@@ -471,14 +471,16 @@ function newMon(scene, x, y, kind) {
         }
     }
     function evolve(toKind) {
+        let dbEntry = dbEntryForKind(toKind);
         let pos = this.getPos();
         let flip = this.sprite.flipX;
         this.sprite.destroy();
         this.sprite = this.scene.add.follower(null, pos.x, pos.y, toKind.toLowerCase())
         this.sprite.setFlipX(flip);
         this.sprite.setDepth(pos.y);
-        this.sprite.setTint(_gameState.tint);
         this.kind = toKind;
+        this.type = dbEntry.type;
+        if (this.type != 2) this.sprite.setTint(_gameState.tint);
     }
     function leave() {
         let x = (random(0, 1) === 0) ? -32 : BASE_SIZE + 32;
