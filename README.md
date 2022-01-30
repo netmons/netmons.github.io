@@ -64,7 +64,7 @@ Inspiration:
 
 ## Credits ![](a/drakano.png)
 
-* Oliver "oz" Z.
+* [Oliver "oz" Z.](https://oliz.io)
 
 ## License
 
