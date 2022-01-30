@@ -6,7 +6,7 @@
 ![Evolve to various creatures!](screenshots/screen1.png)
 ![Call friends and have a party at night!](screenshots/screen2.png)
 
-## Features
+## Features ![](a/trolmon.png)
 
 * Command your Mon around or let it stroll!
 * Eat items to e- or de-volve!
@@ -41,7 +41,7 @@ Inspiration:
 * https://www.pokewiki.de/Pok%C3%A9mon_Pikachu
 * https://github.com/kitao/pyxel#color-palette
 
-### Backlog ![](a/trolmon.png)
+### Backlog
 
 Battle system:
 
@@ -95,7 +95,7 @@ This opens two options:
 * If a certain optional game feature is used, the game may embed music from youtube-nocookie.com, see their terms and policies
 * If a certain optional game feature is used, the game may redirect to youtube.com, see their terms and policies
 
-The game may contain links to external websites or services. These links are being provided as a convenience and for informational purposes only; they do not constitute an endorsement or an approval by myself of any of the products, services or opinions of the corporation or organization or individual. I bear no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.
+The game and this page may contain links to external websites or services. These links are being provided as a convenience and for informational purposes only; they do not constitute an endorsement or an approval by myself of any of the products, services or opinions of the corporation or organization or individual. I bear no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.
 
 ## License
 
