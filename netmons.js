@@ -148,6 +148,10 @@ const DB = { // Stats: HP, Atk, Def, Spd
         "mute": {url: "", embeddable: true},
         "off": {url: "", embeddable: true},
         "sound off": {url: "", embeddable: true},
+    },
+    decor: {
+        grasses: ["grass0", "grass1", "grass2", "grass3"],
+        flowers: ["flower1", "flower2"]
     }
 }
 function sanitizeKind(kind) {
@@ -185,25 +189,22 @@ function loadAsset(scene, name) {
     scene.load.image(name.toLowerCase(), `a/su${name.toLowerCase()}.png`);
 }
 function preload() {
-    /*
-    this.load.image('btn_back', 'a/back.png');
-    this.load.image('btn1', 'a/su1.png');
-    this.load.image('btn2', 'a/su2.png');
-    this.load.image('btn3', 'a/su3.png');
-    this.load.image('btn4', 'a/su4.png');
-    */
-
     this.load.image('sky', 'a/susky.png');
     this.load.image('sun', 'a/susun.png');
     this.load.image('moon', 'a/sumoon.png');
-    this.load.image('ground', 'a/sugrass.png');
+    this.load.image('ground', 'a/suground.png');
+
+    this.load.spritesheet('flowers', "a/suflowers.png", {frameWidth: 16, frameHeight: 16});
 
     for (let item of DB.items) {
         loadAsset(this, item.name);
     }
-
     for (let mon of DB.mons) {
         loadAsset(this, mon.name);
+    }
+    for (let grass of DB.decor.grasses) {
+        loadAsset(this, grass);
+        //this.load.image(grass, `a/su${grass}.png`);
     }
 }
 
@@ -524,24 +525,29 @@ function create() {
     _gameState.moon = this.add.image(2 * BASE_SIZE, 0, 'moon');
     let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
 
-    // UI
-    /*
-    this.add.image(225, 15, 'btn_back');
-    this.add.image(30, 210, 'btn1');
-    this.add.image(90, 210, 'btn2');
-    this.add.image(150, 210, 'btn3');
-    this.add.image(210, 210, 'btn4');
-    */
-
-    /*
-    // Use for flame attack later
-    var particles = this.add.particles('btn_back');
-    var emitter = particles.createEmitter({
-        speed: 100,
-        scale: { start: 1, end: 0 },
-        blendMode: 'ADD'
+    this.anims.create({
+        key: "flower1",
+        frames: this.anims.generateFrameNumbers("flowers", {frames: [0, 1]}),
+        frameRate: 1,
+        repeat: -1
     });
-    */
+    this.anims.create({
+        key: "flower2",
+        frames: this.anims.generateFrameNumbers("flowers", {frames: [2, 3]}),
+        frameRate: 1,
+        repeat: -1,
+        repeatDelay: 500
+    });
+
+    for (let i = 0; i < 20; i++) {
+        this.add.image(0 + random(0, BASE_SIZE), 60 + random(0, BASE_SIZE - 60), 'grass' + random(0, 3));
+    }
+
+    for (let i = 0; i < 6; i++) {
+        let flower = this.add.sprite(0 + random(0, BASE_SIZE), 60 + random(0, BASE_SIZE - 60));
+        flower.setDepth(flower.y - ITEM_SIZE / 2);
+        flower.play("flower" + random(1, 2));
+    }
 
     //this.input.on('pointerdown', onTap, this);
     sky.on('pointerdown', onTap);
