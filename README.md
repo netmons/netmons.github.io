@@ -6,19 +6,18 @@
 ![Evolve to various creatures!](screenshots/screen1.png)
 ![Call friends and have a party at night!](screenshots/screen2.png)
 
+## Features
+
+* Command your Mon around or let it stroll!
+* Eat items to e- or de-volve!
+* Call over friends by picking up a phone and entering their NetMons URL!
+* If all fails, just enjoy the beautiful landscape at day and night!
+
 ## GGJ2022 ![](a/nessya.png)
 
 This game's development started with GGJ2022 and I intend to grow it further!
 
 Theme: **duality**
-
-* ... of you and your opponent
-* ... of you and a friend
-* ... of a Mon and its evolution
-* ... of balanced Mon nutrition
-* ... of day and night
-* ... of Mon types and attacks
-* ... of happiness and sadness
 
 [Diversifiers](https://globalgamejam.org/news/ggj-2022-diversifiers):
 
