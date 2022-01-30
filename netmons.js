@@ -101,7 +101,9 @@ const DB = { // Stats: HP, Atk, Def, Spd
             stats: [10, 3, 3, 3],
             melee: 0,
             range: null,
-            evo: {}
+            evo: {
+                "1234": "Gooh"
+            }
         },
         {
             name: "Gooh",
