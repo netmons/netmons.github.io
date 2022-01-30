@@ -189,10 +189,11 @@ function loadAsset(scene, name) {
     scene.load.image(name.toLowerCase(), `a/su${name.toLowerCase()}.png`);
 }
 function preload() {
-    this.load.image('sky', 'a/susky.png');
-    this.load.image('sun', 'a/susun.png');
-    this.load.image('moon', 'a/sumoon.png');
-    this.load.image('ground', 'a/suground.png');
+    loadAsset(this, "sun");
+    loadAsset(this, "moon");
+    loadAsset(this, "sky");
+    loadAsset(this, "mountains");
+    loadAsset(this, "ground");
 
     this.load.spritesheet('flowers', "a/suflowers.png", {frameWidth: 16, frameHeight: 16});
 
@@ -523,6 +524,7 @@ function create() {
     let sky = this.add.image(WIDTH / 2, 60, 'sky').setInteractive();
     _gameState.sun = this.add.image(2 * BASE_SIZE, 0, 'sun');
     _gameState.moon = this.add.image(2 * BASE_SIZE, 0, 'moon');
+    this.add.image(WIDTH / 2, 60, 'mountains');
     let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
 
     this.anims.create({
@@ -652,13 +654,16 @@ function celestialHeight(x) {
     return Math.round(50 - 60 * Math.sin((x / BASE_SIZE) * Math.PI));
 }
 //const DARKEST_TINT = 0x444499; // 68, 68, 153
+const DARKEST_COLOR = 0x33;
+const NIGHT_BLUE = 0x88;
+const TO_LIGHTEST = 0xFF - DARKEST_COLOR;
 function tintGame(minutes) {
     let tint = 0xFFFFFF;
     if (minutes < 360 || minutes >= 1080) {
         let darkMinutes = (minutes < 360) ? minutes : (1440 - minutes); // 6h (360min) before and after Midnight. The closer to Midnight, the darker
         let darkeningRate = darkMinutes / 300;
-        let rg = Math.min(Math.ceil(68 + darkeningRate * 187), 255);
-        let b = Math.min(Math.ceil(153 + darkeningRate * 187), 255);
+        let rg = Math.min(Math.ceil(DARKEST_COLOR + darkeningRate * TO_LIGHTEST), 255);
+        let b = Math.min(Math.ceil(NIGHT_BLUE + darkeningRate * TO_LIGHTEST), 255);
         tint = rgbToInt(rg, rg, b);
     }
     updateGameTint(tint);
