@@ -429,7 +429,11 @@ function newMon(scene, x, y, kind) {
     kind = dbEntry.name;
     let sprite = scene.add.follower(null, x, y, kind.toLowerCase());
     sprite.setDepth(y);
-    if (dbEntry.type != 2) sprite.setTint(_gameState.tint);
+    if (dbEntry.type == 2) {
+        sprite.toggleData("burns");
+    } else {
+        sprite.setTint(_gameState.tint);
+    }
 
     function getPos() {
         return {x: this.sprite.x, y: this.sprite.y};
@@ -483,11 +487,18 @@ function newMon(scene, x, y, kind) {
         this.sprite.setDepth(pos.y);
         this.kind = toKind;
         this.type = dbEntry.type;
-        if (this.type != 2) this.sprite.setTint(_gameState.tint);
-
-        let evoFX = this.scene.add.follower(null, pos.x, pos.y, "evolution");
+        if (this.type == 2) {
+            this.sprite.toggleData("burns");
+        } else {
+            this.sprite.setTint(_gameState.tint);
+        }
+        _evoFX(this.scene, pos);
+    }
+    function _evoFX(scene, pos) {
+        let evoFX = scene.add.follower(null, pos.x, pos.y, "evolution");
         evoFX.setPath(new Phaser.Curves.Path(pos.x, pos.y).lineTo(pos.x, pos.y - 40));
         evoFX.setDepth(pos.y + 1);
+        evoFX.toggleData("burns");
         evoFX.startFollow({
             positionOnPath: true,
             duration: 500,
@@ -685,7 +696,7 @@ function updateGameTint(tint) {
     for (let gameObj of _gameState.scene.children.getChildren()) {
         if (gameObj != _gameState.moon
             && gameObj != _gameState.sun
-            && (gameObj != _gameState.mon.sprite || _gameState.mon.type != 2)) { // Fire types don't lack light!
+            && !gameObj.getData("burns")) { // Fire types don't lack light!
             gameObj.setTint(tint);
         }
     }

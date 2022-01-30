@@ -28,10 +28,6 @@ Further:
 * ? More phone commands
 * ? Title screen + logo
 
-Errors:
-
-* Friend fire type Mons are tinted at night, should be un-tinted like player fire-type Mons!
-
 ## GGJ2022 ![](a/nessya.png)
 
 Theme: **duality**
@@ -58,7 +54,6 @@ Theme: **duality**
     * [x] [No speech input required](http://gameaccessibilityguidelines.com/ensure-that-speech-input-is-not-required-and-included-only-as-a-supplementary-alternative-input-method)
     * [x] [Game state is auto-saved in URL](http://gameaccessibilityguidelines.com/provide-an-autosave-feature)
 * 20th Century Gaming (inspired by 1990s Tamagotchi and monster games)
-* Keep it Clean (prob. my cleanest GGJ game, yet! `;^)`)
 * Take A Break
 
 Inspiration:
