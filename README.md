@@ -68,7 +68,7 @@ Inspiration:
 
 ## License
 
-Copyright 2022 Oliver "oz" Z.
+Copyright © 2022 Oliver "oz" Z.
 
 * AGPLv3 for all code, see [LICENSE.txt](LICENSE.txt) for details
 * All other content (texts, images, names): <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
