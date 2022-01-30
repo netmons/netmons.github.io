@@ -2,6 +2,10 @@
 
 *A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
 
+![Be the Mon!](screenshots/screen0.png)
+![Evolve to various creatures!](screenshots/screen1.png)
+![Invite friends and have a party at night!](screenshots/screen2.png)
+
 ## Backlog ![](a/trolmon.png)
 
 Eye candy:
