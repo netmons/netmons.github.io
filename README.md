@@ -2,7 +2,7 @@
 
 *A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
 
-## Backlog ![](a/trolmon.png)
+## Backlog ![](a/sutrolmon.png)
 
 Eye candy:
 
@@ -32,7 +32,7 @@ Errors:
 
 * Friend fire type Mons are tinted at night, should be un-tinted like player fire-type Mons!
 
-## GGJ2022 ![](a/nessya.png)
+## GGJ2022 ![](a/sunessya.png)
 
 Theme: **duality**
 
@@ -67,6 +67,6 @@ Inspiration:
 * https://www.pokewiki.de/Pok%C3%A9mon_Pikachu
 * https://github.com/kitao/pyxel#color-palette
 
-## Credits ![](a/drakano.png)
+## Credits ![](a/sudrakano.png)
 
 * Oliver "oz" Z.
