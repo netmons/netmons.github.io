@@ -64,6 +64,16 @@ Further:
 * ? More phone commands
 * ? Title screen + logo
 
+**Mon ideas**
+
+*Botmon*
+
+* A bot with a cape?
+
+*Piggu*, *Froggu*
+
+* Pig-/frog-likes?
+
 ### Technicalities ![](a/glitchee.png)
 
 The game's resolution is 240x240 px, so it could be ported to hackable wearables like [banglejs](https://banglejs.com/).

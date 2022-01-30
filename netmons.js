@@ -113,6 +113,7 @@ const DB = { // Stats: HP, Atk, Def, Spd
                 "1113": "Trolmon",
                 "1222": "Drakano",
                 "2333": "Nessya",
+                "4444": "Glomon",
             }
         },
         {
@@ -145,6 +146,16 @@ const DB = { // Stats: HP, Atk, Def, Spd
                 "1111": "Gooh"
             }
         },
+        {
+            name: "Glomon",
+            type: 2, // Neutral (0) type would be more accurate, but it should glow at night for now (like fire types do)!
+            stats: [30, 10, 10, 10],
+            melee: 0,
+            range: null,
+            evo: {
+                "1234": "Gooh"
+            }
+        }
     ],
     phonebook: {
         "ghostbusters": {url: "https://www.youtube.com/watch?v=Fe93CLbHjxQ", embeddable: false},
@@ -349,8 +360,16 @@ class EventItemConsume extends NMEvent {
         super();
         if (_gameState.items[itemIdx] !== null) {
             let itemId = DB.items.map(i => i.name).indexOf(_gameState.items[itemIdx].itemName);
-            if (itemId < 4) _gameState.stomach.push(itemId); // 4 is Phone, below is food
-            if (itemId === 4) events.push(new EventCallFriend());
+            if (itemId === 4) { // 4 is Phone
+                let friendURL = prompt("Whom to call?") || "";
+                if (friendURL === "") {
+                    _gameState.stomach.push(itemId);
+                } else {
+                    events.push(new EventCallFriend(friendURL));
+                }
+            } else {
+                _gameState.stomach.push(itemId);
+            }
             _gameState.items[itemIdx].destroy();
             _gameState.items[itemIdx] = null;
             while (_gameState.stomach.length > _gameState.maxStomachSize || (itemId == 0 && _gameState.stomach.length > 0)) {
@@ -378,10 +397,8 @@ class EventEvolution extends NMEvent {
     }
 }
 class EventCallFriend extends NMEvent {
-    constructor(toMon) {
+    constructor(friendURL) {
         super();
-        let friendURL = prompt("Whom to call?") || "";
-        if (friendURL === "") return;
         let phonebookEntry = DB.phonebook[friendURL.toLowerCase()];
         if (phonebookEntry !== undefined) {
             events.push(new EventJukebox(phonebookEntry.url, phonebookEntry.embeddable));
