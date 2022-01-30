@@ -70,7 +70,7 @@ The game's resolution is 240x240 px, so it could be ported to hackable wearables
 All assets are created for half the screen size (120x120 px) and scaled up to twice their size.
 This open two options:
 
-* Target smaller screens (below 240x240 px), at minimum of 120x120 px size, by not using the scaled up assets (`su*.png`) and reducing `BASE_SIZE` from 240 to 120
+* Target smaller screens (below 240x240 px), at minimum of 120x120 px size, by not using the scaled up assets (`su*.png`) and reducing `BASE_SIZE` from 240 to 120.
 * Support higher fidelity assets. All items are currently 8x8 px, all Mons are 16x16 px and scaled up to 16x16 px and 32x32 px respectively.
   Assets could be overwritten to e.g. use 32x32 Mon sprites with more detail.
 
