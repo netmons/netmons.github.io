@@ -1,6 +1,6 @@
 # [NetMons ![](a/sugooh.png)](https://netmons.net)
 
-*A Pokemon-Digimon-Tamagotchi-like at best, a digital goldfish at worst.*
+*A Monster-Tamagotchi-like at best, a digital goldfish at worst.*
 
 ![Be the Mon!](screenshots/screen0.png)
 ![Evolve to various creatures!](screenshots/screen1.png)
