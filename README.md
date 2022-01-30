@@ -69,7 +69,7 @@ Inspiration:
 ## Privacy, Disclaimer and Legal 💩
 
 * The game does not set any cookies, it does not track you and it does not want your personal data. You cannot comment on anything or signup for a newsletter.
-* The game is hosted on GitHub Pages (Microsoft), see their terms and policies
+* The game is hosted on GitHub (Microsoft), see their terms and policies
 * The game fetches dependencies from cdn.jsdelivr.net, see their terms and policies
 * If a certain optional game feature is used, the game may embed music from youtube-nocookie.com, see their terms and policies
 * If a certain optional game feature is used, the game may redirect to youtube.com, see their terms and policies
