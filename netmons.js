@@ -641,7 +641,7 @@ function minutesOfDay() {
     return hours * 60 + minutes;
 }
 function celestialHeight(x) {
-    return Math.round(60 - 60 * Math.sin((x / BASE_SIZE) * Math.PI));
+    return Math.round(50 - 60 * Math.sin((x / BASE_SIZE) * Math.PI));
 }
 //const DARKEST_TINT = 0x444499; // 68, 68, 153
 function tintGame(minutes) {
@@ -657,7 +657,7 @@ function tintGame(minutes) {
 }
 function updateGameTint(tint) {
     _gameState.tint = tint;
-    console.log("Scene children", _gameState.scene.children.length);
+    if (DEBUG) console.log("Scene children", _gameState.scene.children.length);
     for (let gameObj of _gameState.scene.children.getChildren()) {
         if (gameObj != _gameState.moon
             && gameObj != _gameState.sun

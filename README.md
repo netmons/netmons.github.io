@@ -28,6 +28,10 @@ Far future:
 * ? Friend interaction
 * ? More Mons
 
+Errors:
+
+* Friend fire type Mons are tinted at night, should be un-tinted like player fire-type Mons!
+
 ## GGJ2022 ![](a/nessya.png)
 
 Theme: **duality**
