@@ -1,10 +1,12 @@
-# [NetMons ![](a/sugooh.png)](https://netmons.net)
+# [NetMons.net ![](a/sugooh.png)](https://netmons.net)
 
 *A Monster-Tamagotchi-like at best, a digital goldfish at worst.*
 
 ![Be the Mon!](screenshots/screen0.png)
 ![Evolve to various creatures!](screenshots/screen1.png)
 ![Call friends and have a party at night!](screenshots/screen2.png)
+
+Alternative URL: [netmons.github.io](https://netmons.github.io)
 
 ## Features ![](a/trolmon.png)
 
