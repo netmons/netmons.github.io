@@ -1,4 +1,4 @@
-# [NetMons.net ![](a/sugooh.png)](https://netmons.net)
+# [NetMons ![](a/sugooh.png)](https://netmons.net)
 
 *A Monster-Tamagotchi-like at best, a digital goldfish at worst.*
 
