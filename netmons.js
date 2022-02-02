@@ -212,7 +212,6 @@ function preload() {
     loadAsset(this, "sun");
     loadAsset(this, "moon");
     loadAsset(this, "sky");
-    loadAsset(this, "mountains");
     loadAsset(this, "ground");
 
     loadAsset(this, "evolution");
@@ -579,11 +578,10 @@ function create() {
     _gameState.scene = this;
 
     // Background
-    let sky = this.add.image(WIDTH / 2, 60, 'sky').setInteractive();
+    let sky = this.add.image(WIDTH / 2, 60, 'sky');
     _gameState.sun = this.add.image(2 * BASE_SIZE, 0, 'sun');
     _gameState.moon = this.add.image(2 * BASE_SIZE, 0, 'moon');
-    this.add.image(WIDTH / 2, 60, 'mountains');
-    let ground = this.add.sprite(WIDTH / 2, 150, 'ground').setInteractive();
+    let ground = this.add.sprite(WIDTH / 2, HEIGHT / 2, 'ground').setInteractive();
 
     this.anims.create({
         key: "flower1",
@@ -610,15 +608,7 @@ function create() {
     }
 
     //this.input.on('pointerdown', onTap, this);
-    sky.on('pointerdown', onTap);
     ground.on('pointerdown', onTap);
-
-    if (DEBUG) {
-        events.push(new EventMonSpawn(18, HEIGHT / 2, "Trolmon"));
-        events.push(new EventMonSpawn(53, HEIGHT / 2, "Drakano"));
-        events.push(new EventMonSpawn(88, HEIGHT / 2, "Nessya"));
-        events.push(new EventMonSpawn(60, HEIGHT / 2 - 40, "haXx"));
-    }
 
     let initialState = readStateFromURL(window.location.href);
     events.push(new EventPlayerSpawn(WIDTH / 2, HEIGHT / 2, initialState.kind));
