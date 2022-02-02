@@ -339,15 +339,12 @@ class EventIdle extends EventMonMoveTo {
 class EventItemSpawn extends NMEvent {
     constructor() {
         super();
-        let locationIdx = random(0, 3);
+        let locationIdx = this._determineLocation();
         let locationCoords = [..._gameState.itemSpawnLocations[locationIdx]];
         locationCoords[0] += random(-2, 2);
         locationCoords[1] += random(-2, 2);
         let itemName = DB.items[random(0, DB.items.length - 1)].name;
-        if (_gameState.items[locationIdx] !== null) {
-            _gameState.items[locationIdx].destroy();
-            _gameState.items[locationIdx] = null;
-        }
+        this._destroyLocationIfNeeded(locationIdx);
         _gameState.items[locationIdx] = _gameState.scene.add.sprite(locationCoords[0], locationCoords[1], itemName.toLowerCase()).setInteractive();
         _gameState.items[locationIdx].setDepth(locationCoords[1] - ITEM_SIZE / 2);
         _gameState.items[locationIdx].setTint(_gameState.tint);
@@ -355,6 +352,18 @@ class EventItemSpawn extends NMEvent {
         _gameState.items[locationIdx].on('pointerdown', (pointer) => {
             events.push(new EventTap(Math.floor(pointer.x), Math.floor(pointer.y), locationIdx));
         });
+    }
+    _determineLocation() {
+        let freeLocationIndices = [0, 1, 2, 3].filter(idx => _gameState.items[idx] === null);
+        if (freeLocationIndices.length > 0) {
+            return freeLocationIndices[random(0, freeLocationIndices.length - 1)];
+        }
+        return random(0, 3);
+    }
+    _destroyLocationIfNeeded(locationIdx) {
+        if (_gameState.items[locationIdx] !== null) {
+            _gameState.items[locationIdx].destroy();
+        }
     }
 }
 class EventItemConsume extends NMEvent {
