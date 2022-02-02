@@ -109,5 +109,4 @@ Copyright © 2022 Oliver "oz" Z.
 
 **Dependencies**
 
-* Phaser, https://github.com/photonstorm/phaser
-  MIT License, by Richard Davey, Photon Storm Ltd.
+* [Phaser](https://github.com/photonstorm/phaser), MIT License, by Richard Davey, Photon Storm Ltd.
