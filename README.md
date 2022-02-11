@@ -45,6 +45,11 @@ Inspiration:
 
 ### Backlog
 
+Technical:
+
+* Pack sprites
+* Bundle and minify JS
+
 Battle system:
 
 * Battle item spawn
