@@ -103,7 +103,7 @@ This opens two options:
 
 The game and this page may contain links to external websites or services. These links are being provided as a convenience and for informational purposes only; they do not constitute an endorsement or an approval by myself of any of the products, services or opinions of the corporation or organization or individual. I bear no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.
 
-## License
+## License ![](a/glomon.png)
 
 Copyright © 2022 Oliver "oz" Z.
 
