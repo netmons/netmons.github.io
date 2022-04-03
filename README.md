@@ -8,12 +8,31 @@
 
 Alternative URL: [netmons.github.io](https://netmons.github.io)
 
-## Features ![](a/trolmon.png)
+## Features and Handbook ![](a/trolmon.png)
 
 * Command your Mon around or let it stroll!
 * Eat items to e- or de-volve!
 * Call over friends by picking up a phone and entering their NetMons URL!
 * If all fails, just enjoy the beautiful landscape at day and night!
+
+|Item|Description|
+|---|---|
+|![Salad](a/susalad.png)|Salad, it's good for you and your mons!|
+|![Steak](a/susteak.png)|Steak, good for some of you and some mons, too!|
+|![Water](a/suwater.png)|Water, drink it by the buckets!|
+|![Candy](a/sucandy.png)|Candy, tasty and clears stomach!|
+|![Phone](a/suphone.png)|Phone, multi-purpose device: Call friends, other mons or control music!|
+
+|Mon|Description|
+|---|---|
+|![Gooh](a/sugooh.png)|Likes to eat all kind of things!|
+|![Trolmon](a/sutrolmon.png)|A super agile troll! Likes to dance, eats mostly salad with some minor cup of water.|
+|![Drakano](a/sudrakano.png)|A dragon and a volcano, duh! Likes meat with some minor salad, dislikes water.|
+|![Nessya](a/sunessya.png)|Mysterious sea creature! Likes water and meat, salad not so much (we|
+|![Glomon](a/suglomon.png)|Spends way too much time with phones without ever calling anyone?! Its screen backlight shines bright at night.|
+|![Lalima](a/sulalima.png)|A beautiful (monster) butterfly! Restricts itself to a very balanced diet!|
+|![Glitchee](a/suglitchee.png)|If you see this, you are a mean hacker!|
+
 
 ## GGJ2022 ![](a/nessya.png)
 
@@ -58,16 +77,10 @@ Battle system:
 * Tab events to attacks (melee/range)
 * Balance
 
-Bonding, chores, mood:
-
-* ? 💩 support
-* ? Happiness support
-
 Further:
 
+* ? Bonding, chores, mood/happiness support
 * ? Friend interaction
-* ? More Mons
-* ? More phone commands
 * ? Title screen + logo
 
 **Mon ideas**
@@ -94,7 +107,7 @@ This opens two options:
 
 * [Oliver "oz" Z.](https://oliz.io)
 
-## Privacy, Disclaimer and Legal 💩
+## Privacy, Disclaimer and Legal ![](a/lalima.png)
 
 * The game does not set any cookies, it does not track you and it does not want your personal data. You cannot comment on anything or signup for a newsletter.
 * The game is hosted on GitHub Pages (GitHub, Microsoft), see their terms and policies
