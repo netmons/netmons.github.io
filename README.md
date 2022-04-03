@@ -2,8 +2,7 @@
 
 *A Monster-Tamagotchi-like at best, a digital goldfish at worst.*
 
-![Be the Mon!](screenshots/screen0.png)
-![Evolve to various creatures!](screenshots/screen1.png)
+![Be the Mon and evolve to various creatures!](screenshots/screen0.png)
 ![Call friends and have a party at night!](screenshots/screen2.png)
 ![Drakano raid!](screenshots/drakanos.png)
 
