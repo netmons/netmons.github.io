@@ -31,8 +31,6 @@ Alternative URL: [netmons.github.io](https://netmons.github.io)
 |![Nessya](a/sunessya.png)|Mysterious sea creature! Likes water and meat, salad not so much (so the legends say).|
 |![Glomon](a/suglomon.png)|Spends way too much time with phones without ever calling anyone?! Its screen backlight shines bright at night.|
 |![Lalima](a/sulalima.png)|A beautiful (monster) butterfly! Restricts itself to a very balanced diet!|
-|![Glitchee](a/suglitchee.png)|If you see this, you are a mean hacker!|
-
 
 ## GGJ2022 ![](a/nessya.png)
 
