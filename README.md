@@ -8,7 +8,7 @@
 
 Alternative URL: [netmons.github.io](https://netmons.github.io)
 
-## Features and Handbook ![](a/trolmon.png)
+## Features and Manual ![](a/trolmon.png)
 
 * Command your Mon around or let it stroll!
 * Eat items to e- or de-volve!
