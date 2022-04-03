@@ -116,6 +116,7 @@ const DB = { // Stats: HP, Atk, Def, Spd
                 "1222": "Drakano",
                 "2333": "Nessya",
                 "4444": "Glomon",
+                "1234": "Lalima"
             }
         },
         {
@@ -156,6 +157,19 @@ const DB = { // Stats: HP, Atk, Def, Spd
             range: null,
             evo: {
                 "1234": "Gooh"
+            }
+        },
+        {
+            name: "Lalima",
+            type: 1,
+            stats: [30, 10, 10, 10],
+            melee: 0,
+            range: null,
+            evo: {
+                "1111": "Gooh",
+                "2222": "Gooh",
+                "3333": "Gooh",
+                "4444": "Gooh"
             }
         }
     ],
