@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "NetMons",
+    "short_name": "NetMons",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "A Monster-Tamagotchi-like at best, a digital goldfish at worst!",
+    "icons": [
+        {
+            "src": "app/sugooh.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "app/susugooh.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "app/sususugooh.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "app/susususugooh.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
+}

@@ -25,12 +25,12 @@ Alternative URL: [netmons.github.io](https://netmons.github.io)
 
 |Mon|Description|
 |---|---|
-|![Gooh](a/sugooh.png)|Likes to eat all kind of things!|
-|![Trolmon](a/sutrolmon.png)|A super agile troll! Likes to dance, eats mostly salad with some minor cup of water.|
-|![Drakano](a/sudrakano.png)|A dragon and a volcano, duh! Likes meat with some minor salad, dislikes water.|
-|![Nessya](a/sunessya.png)|Mysterious sea creature! Likes water and meat, salad not so much (so the legends say).|
-|![Glomon](a/suglomon.png)|Spends way too much time with phones without ever calling anyone?! Its screen backlight shines bright at night.|
-|![Lalima](a/sulalima.png)|A beautiful (monster) butterfly! Restricts itself to a very balanced diet!|
+|![Gooh](a/sugooh.png)|**Gooh**, likes to eat all kind of things!|
+|![Trolmon](a/sutrolmon.png)|**Trolmon**, a super agile troll! Likes to dance, eats mostly salad with some minor cup of water.|
+|![Drakano](a/sudrakano.png)|**Drakano**, a dragon and a volcano, duh! Likes meat with some minor salad, dislikes water.|
+|![Nessya](a/sunessya.png)|**Nessya**, the mysterious sea creature! Likes water and meat, salad not so much (so the legends say).|
+|![Glomon](a/suglomon.png)|**Glomon**, spends way too much time with phones without ever calling anyone?! Its screen backlight shines bright at night.|
+|![Lalima](a/sulalima.png)|**Lalima**, a beautiful (monster) butterfly! Restricts itself to a very balanced diet!|
 
 ## GGJ2022 ![](a/nessya.png)
 
@@ -67,19 +67,10 @@ Technical:
 * Pack sprites
 * Bundle and minify JS
 
-Battle system:
-
-* Battle item spawn
-* Battle start via URL prompt
-* Attack art
-* Tab events to attacks (melee/range)
-* Balance
-
 Further:
 
-* ? Bonding, chores, mood/happiness support
+* ? Bonding, mood/happiness support
 * ? Friend interaction
-* ? Title screen + logo
 
 **Mon ideas**
 
